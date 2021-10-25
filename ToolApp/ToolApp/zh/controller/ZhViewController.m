@@ -73,7 +73,7 @@
     
 //    [self showDefaultBackNaviWithAction];
     
-    [self handleNetWork];
+//    [self handleNetWork];
     __weak typeof(self) ws = self;
     self.footerEmptyView.refreshDataBlock = ^(ZhEmptyLoadState state) {
         ws.refreshDataBlock(state);
