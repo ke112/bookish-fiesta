@@ -21,8 +21,6 @@
 
 /// 统一配置
 - (void)config{
-//    self.delegate = self;
-//    self.dataSource = self;
     self.backgroundColor = kDefaultBackgrouncColor;
     
     if (@available(iOS 11,*)) {

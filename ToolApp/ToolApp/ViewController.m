@@ -22,6 +22,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.title = @"导航栏";
+//    self.backgroundColor = UIColor.systemBackgroundColor;
+//    self.naviBarColor = UIColor.yellowColor;
+
     UILabel *lb = [[UILabel alloc]init];
     lb.text = @"222";
     [self.view addSubview:lb];
@@ -54,6 +58,13 @@
     [testBtn4 addTarget:self action:@selector(testClick4) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:testBtn4];
     testBtn4.frame = CGRectMake(100, 320, 60, 20);
+    
+    UIButton *testBtn5 = [UIButton buttonWithType:UIButtonTypeCustom];
+    [testBtn5 setTitle:@"testBtn" forState:UIControlStateNormal];
+    [testBtn5 setTitleColor:UIColor.redColor forState:UIControlStateNormal];
+    [testBtn5 addTarget:self action:@selector(testClick5) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:testBtn5];
+    testBtn5.frame = CGRectMake(100, 360, 60, 20);
     
 //    [[ZHLocation shardLocationManger] beginUpdatingLocationSuccess:^(ZHLocationModel *locationObj) {
 //        KKLog(@"country %@",locationObj.debugDescription);
@@ -124,6 +135,8 @@
     }];
 }
 
-
+- (void)testClick5{
+    [self.navigationController pushViewController:[ViewController new] animated:YES];
+}
 
 @end

@@ -55,7 +55,7 @@
 //    emptyView.actionBtnTitleColor = kColor_MainBlue;
     emptyView.actionBtnWidth = 80;
     emptyView.actionBtnHeight = 33;
-    emptyView.backgroundColor = kColorWithHex(@"0xF5F5F5");
+    emptyView.backgroundColor = kDefaultBackgrouncColor;
     _emptyView = emptyView;
     [self.contentView addSubview:emptyView];
     

@@ -14,20 +14,22 @@
     [super awakeFromNib];
     // Initialization code
     self.contentView.backgroundColor = kDefaultBackgrouncColor;
+    [self setUI];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
+        self.contentView.backgroundColor = kDefaultBackgrouncColor;
         [self setUI];
     }
     return self;
 }
 
+///子类去重写
 - (void)setUI{
-    self.contentView.backgroundColor = kDefaultBackgrouncColor;
+    
 }
 
 @end

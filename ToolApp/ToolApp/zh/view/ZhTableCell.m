@@ -19,7 +19,7 @@
     [super awakeFromNib];
     // Initialization code
     self.contentView.backgroundColor = kDefaultBackgrouncColor;
-    
+    [self setUI];
 }
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     if (self == [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {

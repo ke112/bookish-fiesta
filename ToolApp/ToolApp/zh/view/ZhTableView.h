@@ -11,15 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ZhTableView : UITableView
-/// <UITableViewDataSource,UITableViewDelegate>
 
-/// 头视图
-@property (nonatomic, strong) UIView *defaultHeaderView;
-/// 尾视图
-@property (nonatomic, strong) UIView *defaultFooterView;
-
-/// 刷新当前cell
-- (void)zh_reloadCell:(NSIndexPath *)indexPath;
 
 @end
 

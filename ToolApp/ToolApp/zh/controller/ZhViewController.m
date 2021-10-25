@@ -38,13 +38,7 @@
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    if (self.NaviBarLineHide) {
-        [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-        [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-    }else{
-        [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-        [self.navigationController.navigationBar setShadowImage:nil];
-    }
+    
 }
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -56,29 +50,35 @@
     [super viewWillDisappear:animated];
     if([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = YES;
-    };
-    [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-    [self.navigationController.navigationBar setShadowImage:nil];
+    }
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = kColorWithHex(@"0xF5F5F5");
+    
     self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
     self.navigationController.navigationBar.translucent = NO;
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    self.backgroundColor = kDefaultBackgrouncColor;
+    if (@available(iOS 11.0, *)) {
+        self.naviBarColor = UIColor.systemBackgroundColor;
+    }else{
+        self.naviBarColor = UIColor.whiteColor;
+    }
     
     self.tableStyle = UITableViewStyleGrouped;
     self.pageNum = 1;
     self.pageSize = 10;
     
-    [self showDefaultBackNaviWithAction];
+//    [self showDefaultBackNaviWithAction];
     
     [self handleNetWork];
     __weak typeof(self) ws = self;
     self.footerEmptyView.refreshDataBlock = ^(ZhEmptyLoadState state) {
         ws.refreshDataBlock(state);
     };
+
 }
 
 /// 处理网络相关问题
@@ -132,7 +132,7 @@
 //        emptyView.actionBtnTitleColor = kColor_MainBlue;
         emptyView.actionBtnWidth = 80;
         emptyView.actionBtnHeight = 33;
-        emptyView.backgroundColor = kColorWithHex(0xF5F5F5);
+        emptyView.backgroundColor = kDefaultBackgrouncColor;
         
         if (i == 0) {
             self.tableView.ly_emptyView = emptyView;
@@ -195,40 +195,41 @@
     self.footerEmptyView.state = state;
 }
 
-
-- (void)setBgColor:(UIColor *)bgColor{
-    _bgColor = bgColor;
-    self.view.backgroundColor = bgColor;
-    self.tableView.backgroundColor = bgColor;
-    self.collectionView.backgroundColor = bgColor;
+/// 背景色
+- (void)setBackgroundColor:(UIColor *)backgroundColor{
+    _backgroundColor = backgroundColor;
+    self.view.backgroundColor = backgroundColor;
+    self.tableView.backgroundColor = backgroundColor;
+    self.collectionView.backgroundColor = backgroundColor;
+}
+/// 导航栏背景色
+- (void)setNaviBarColor:(UIColor *)naviBarColor{
+    _naviBarColor = naviBarColor;
+    
+    if (@available(iOS 13.0, *)) {
+        UINavigationBarAppearance *appearance = [[UINavigationBarAppearance alloc] init];
+        // 背景色
+        appearance.backgroundColor = naviBarColor;
+        // 去除导航栏阴影（如果不设置clear，导航栏底下会有一条阴影线）
+        appearance.shadowColor = [UIColor clearColor];
+        // 字体颜色、尺寸等
+        appearance.titleTextAttributes = @{NSForegroundColorAttributeName: UIColor.labelColor,
+                                           NSFontAttributeName:[UIFont systemFontOfSize:18 weight:UIFontWeightBold]};
+        // 带scroll滑动的页面
+        self.navigationController.navigationBar.scrollEdgeAppearance = appearance;
+        // 常规页面
+        self.navigationController.navigationBar.standardAppearance = appearance;
+    }else{
+        self.navigationController.navigationBar.barTintColor = naviBarColor;
+    }
 }
 
-/// 设置导航栏标题
-- (UILabel *)setTitleStr:(NSString *)title{
-    self.title = title;
-    UILabel *titleLb = [[UILabel alloc]init];
-    titleLb.frame = CGRectMake(0, 0, 200, 44);
-    titleLb.textAlignment = NSTextAlignmentCenter;
-    titleLb.font = [UIFont systemFontOfSize:18 weight:UIFontWeightBold];
-    titleLb.textColor = kColorWithHex(0x2c2c2c);
-    titleLb.text = title;
-    [titleLb sizeToFit];
-    self.navigationItem.titleView = titleLb;
-    return titleLb;
-}
-
-/// 设置titleview
-- (UIView *)setTitleView:(UIView *)titleView{
-    titleView.frame = CGRectMake(40, (44-35)/2, kScreenWidth-80, 35);
-    self.navigationItem.titleView = titleView;
-    return titleView;
-}
 
 - (UIButton *)showDefaultBackNaviWithAction{
-    return [self showDefaultBackNaviWithAction:@selector(backBtnclick)];
+    return [self showDefaultBackNaviWithAction:@selector(backEvent)];
 }
 - (UIButton *)showWhiteBackNaviWithAction{
-    return [self setLeftNavWithImage:@"common_back_FFF_icon" target:self action:@selector(backBtnclick)];
+    return [self setLeftNavWithImage:@"common_back_FFF_icon" target:self action:@selector(backEvent)];
 }
 - (UIButton *)showDefaultBackNaviWithAction:(SEL)action{
     return [self setLeftNavWithImage:@"project_back" target:self action:action];
@@ -265,24 +266,24 @@
 }
 
 #pragma mark - 返回点击事件
-- (void)backBtnclick{
+- (void)backEvent{
+    [self.view endEditing:YES];
     NSInteger count = self.navigationController.viewControllers.count;
     if (count > 1) {
         [self.navigationController popViewControllerAnimated:YES];
     }else{
         [self dismissViewControllerAnimated:YES completion:nil];
     }
-    [self.view endEditing:YES];
 }
 /**基类返回按钮方法  没有动画效果*/
-- (void)goBackNoAnimation{
+- (void)backEventNoAnimation{
+    [self.view endEditing:YES];
     NSInteger count = self.navigationController.viewControllers.count;
     if (count > 1) {
         [self.navigationController popViewControllerAnimated:NO];
     }else{
         [self dismissViewControllerAnimated:NO completion:nil];
     }
-    [self.view endEditing:YES];
 }
 
 - (void)hideDefaultBackNavi{
@@ -292,7 +293,7 @@
 - (void)hideRightNaviButton{
     self.navigationItem.rightBarButtonItem = nil;
 }
-
+#pragma mark ====== 子类需要重写方法 ======
 - (void)setNavi{
     
 }
@@ -353,7 +354,7 @@
     [self.collectionView.mj_footer endRefreshing];
 }
 
-/// 设置当前控制器是否为暗黑模式
+/// 设置当前控制器为暗黑模式
 - (void)setInterfaceStyleIsDarkModel:(BOOL)isDarkModel{
     if (@available(iOS 13.0, *)) {
         if (isDarkModel) {

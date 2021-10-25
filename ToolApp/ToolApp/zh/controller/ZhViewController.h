@@ -20,9 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ZhViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
-/// 设置背景颜色
-@property (nonatomic, strong) UIColor *bgColor;
-
 /// 表格的风格  (默认写了UITableViewStyleGrouped) 可重写
 @property (nonatomic, assign) UITableViewStyle tableStyle;
 /// 表格
@@ -55,8 +52,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 禁止侧滑 设为YES
 @property (nonatomic, assign) BOOL disableSideslip;
-/// 隐藏导航栏黑线
-@property (nonatomic, assign) BOOL NaviBarLineHide;
+
+/// 背景色
+@property (nonatomic, strong) UIColor *backgroundColor;
+/// 导航栏背景色
+@property (nonatomic, strong) UIColor *naviBarColor;
+
 
 /// 手动隐藏emptyView
 - (void)zh_hideEmptyView;
@@ -76,10 +77,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)zh_showFooterEmptyView:(ZhEmptyLoadState)state;
 
 
-/// 设置导航栏标题
-- (UILabel *)setTitleStr:(NSString *)title;
-/// 设置titleview
-- (UIView *)setTitleView:(UIView *)titleView;
 
 /**设置默认黑色返回箭头*/
 - (UIButton *)showDefaultBackNaviWithAction;
@@ -103,9 +100,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**基类返回按钮方法  默认有动画效果*/
-- (void)backBtnclick;
+- (void)backEvent;
 /**基类返回按钮方法  没有动画效果*/
-- (void)goBackNoAnimation;
+- (void)backEventNoAnimation;
 /**隐藏导航栏左侧按钮*/
 - (void)hideDefaultBackNavi;
 /// 隐藏导航栏右侧按钮
@@ -141,7 +138,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 结束刷新状态
 - (void)endRefreshState;
 
-/// 设置当前控制器是否为暗黑模式
+/// 设置当前控制器为暗黑模式
 - (void)setInterfaceStyleIsDarkModel:(BOOL)isDarkModel;
 /// 暗黑模式改变的回调
 @property (nonatomic, copy) void (^InterfaceStyleDidChangeBlock)(BOOL isDarkModel);

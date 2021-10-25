@@ -6,8 +6,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZhViewController.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : ZhViewController
 
 
 @end

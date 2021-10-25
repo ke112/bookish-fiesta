@@ -27,7 +27,7 @@
 }
 
 + (instancetype)zh_itemWithTitle:(NSString *)title image:(UIImage *)image highLightImage:(UIImage *)highLightImage target:(id)target action:(SEL)action {
-    UIButton *button = [UIButton new];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     if (title) {
         [button setTitle:title forState:UIControlStateNormal];
     }
@@ -37,12 +37,12 @@
     if (highLightImage) {
         [button setImage:highLightImage forState:UIControlStateHighlighted];
     }
-    [button sizeToFit];
+//    [button sizeToFit];
     [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-    
-    if (button.bounds.size.width < 44.0f) {
+//
+//    if (button.bounds.size.width < 44.0f) {
         button.bounds = CGRectMake(0, 0, 44.0f, 44.0f);
-    }
+//    }
     
     return [[self alloc] initWithCustomView:button];
 }
