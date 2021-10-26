@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) ZhCollectionView *collectionView;
 
 /// 数据源
-@property (nonatomic, strong) NSMutableArray *dataArray;
+@property (nonatomic, strong) NSMutableArray *dataSource;
 /// 请求页码数
 @property (nonatomic, assign) NSInteger pageNum;
 /// 请求个数
@@ -57,6 +57,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIColor *backgroundColor;
 /// 导航栏背景色
 @property (nonatomic, strong) UIColor *naviBarColor;
+/// 导航栏标题色
+@property (nonatomic, strong) UIColor *naviTitleColor;
+/// 导航栏标题子图
+@property (nonatomic, strong) UIFont *naviTitleFont;
+/// 导航栏左右按钮颜色
+@property (nonatomic, strong) UIColor *naviItemColor;
 
 
 /// 手动隐藏emptyView

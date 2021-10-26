@@ -42,13 +42,13 @@
 }
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    if([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = !self.disableSideslip;
     }
 }
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    if([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     }
 }
@@ -61,7 +61,7 @@
     self.navigationController.navigationBar.translucent = NO;
     
     self.backgroundColor = kDefaultBackgrouncColor;
-    if (@available(iOS 11.0, *)) {
+    if (@available(iOS 13.0, *)) {
         self.naviBarColor = UIColor.systemBackgroundColor;
     }else{
         self.naviBarColor = UIColor.whiteColor;
@@ -205,25 +205,60 @@
 /// 导航栏背景色
 - (void)setNaviBarColor:(UIColor *)naviBarColor{
     _naviBarColor = naviBarColor;
+    [self configNaviBar];
+}
+/// 导航栏标题色
+- (void)setNaviTitleColor:(UIColor *)naviTitleColor{
+    _naviTitleColor = naviTitleColor;
+    [self configNaviBar];
+}
+/// 导航栏标字体
+- (void)setNaviTitleFont:(UIFont *)naviTitleFont{
+    _naviTitleFont = naviTitleFont;
+    [self configNaviBar];
+}
+/// 导航栏左右按钮颜色
+- (void)setNaviItemColor:(UIColor *)naviItemColor{
+    _naviItemColor = naviItemColor;
+    [self configNaviBar];
+}
+
+/// 统一设置
+- (void)configNaviBar{
+    ///导航栏背景色
+    UIColor *naviBarColor = self.naviBarColor ? : UIColor.whiteColor;
+    ///导航栏标题色
+    UIColor *naviTitleColor;
+    UIColor *naviItemColor;
+    if (@available(iOS 13.0, *)) {
+        naviTitleColor = self.naviTitleColor ? : UIColor.labelColor;
+        naviItemColor = self.naviItemColor ? : UIColor.labelColor;
+    }else{
+        naviTitleColor = self.naviTitleColor ? : UIColor.blackColor;
+        naviItemColor = self.naviItemColor ? : UIColor.blackColor;
+    }
+    ///导航栏标题字体
+    UIFont *naviTitleFont = self.naviTitleFont ? : [UIFont systemFontOfSize:18 weight:UIFontWeightBold];
+    // 字体颜色、尺寸等
+    NSDictionary<NSAttributedStringKey, id> *naviTitleTextAttributes = @{
+        NSForegroundColorAttributeName : naviTitleColor,
+        NSFontAttributeName : naviTitleFont,
+    };
     
     if (@available(iOS 13.0, *)) {
         UINavigationBarAppearance *appearance = [[UINavigationBarAppearance alloc] init];
-        // 背景色
-        appearance.backgroundColor = naviBarColor;
-        // 去除导航栏阴影（如果不设置clear，导航栏底下会有一条阴影线）
-        appearance.shadowColor = [UIColor clearColor];
-        // 字体颜色、尺寸等
-        appearance.titleTextAttributes = @{NSForegroundColorAttributeName: UIColor.labelColor,
-                                           NSFontAttributeName:[UIFont systemFontOfSize:18 weight:UIFontWeightBold]};
-        // 带scroll滑动的页面
-        self.navigationController.navigationBar.scrollEdgeAppearance = appearance;
-        // 常规页面
-        self.navigationController.navigationBar.standardAppearance = appearance;
+        appearance.backgroundColor = naviBarColor;  // 背景色
+        appearance.shadowColor = [UIColor clearColor];  // 去除导航栏阴影（如果不设置clear，导航栏底下会有一条阴影线)
+        appearance.titleTextAttributes = naviTitleTextAttributes;  // 字体颜色、尺寸等
+        self.navigationController.navigationBar.scrollEdgeAppearance = appearance;  // 带scroll滑动的页面
+        self.navigationController.navigationBar.standardAppearance = appearance;  // 常规页面
     }else{
         self.navigationController.navigationBar.barTintColor = naviBarColor;
+        self.navigationController.navigationBar.titleTextAttributes = naviTitleTextAttributes;
     }
+    ///导航栏左右按钮颜色
+    self.navigationController.navigationBar.tintColor = naviItemColor;
 }
-
 
 - (UIButton *)showDefaultBackNaviWithAction{
     return [self showDefaultBackNaviWithAction:@selector(backEvent)];
@@ -405,9 +440,9 @@
         [ws endRefreshState];
         NSArray *data = [modelClass.class zh_modelArrayWithJsonArray:[responseObject objectForKey:@"list"]];
         if (ws.pageNum == 1) {
-            [ws.dataArray removeAllObjects];
+            [ws.dataSource removeAllObjects];
         }
-        [ws.dataArray addObjectsFromArray:data];
+        [ws.dataSource addObjectsFromArray:data];
         [ws.tableView reloadData];
         if (ws.pageNum == 1) {
             [ws.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
@@ -431,7 +466,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     // Return the number of rows in the section.
-    return self.dataArray.count;
+    return self.dataSource.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"UITableViewCell";
@@ -460,7 +495,7 @@
     return 1;
 }
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return self.dataArray.count;
+    return self.dataSource.count;
 }
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"UICollectionViewCell";
@@ -511,11 +546,11 @@
     return _collectionView;
 }
 
-- (NSMutableArray *)dataArray{
-    if (!_dataArray) {
-        _dataArray = [NSMutableArray array];
+- (NSMutableArray *)dataSource{
+    if (!_dataSource) {
+        _dataSource = [NSMutableArray array];
     }
-    return _dataArray;
+    return _dataSource;
 }
 - (NSMutableDictionary *)vcParam{
     if (_vcParam == nil) {

@@ -23,8 +23,11 @@
     // Do any additional setup after loading the view.
     
     self.title = @"导航栏";
-//    self.backgroundColor = UIColor.systemBackgroundColor;
+//    self.backgroundColor = UIColor.grayColor;
 //    self.naviBarColor = UIColor.yellowColor;
+//    self.naviTitleColor = UIColor.redColor;
+//    self.naviTitleFont = [UIFont systemFontOfSize:15];
+//    self.naviItemColor = UIColor.blackColor;
 
     UILabel *lb = [[UILabel alloc]init];
     lb.text = @"222";
