@@ -27,7 +27,8 @@
 @interface ZhViewController ()
 /// 子类vc是否有分页请求
 @property (nonatomic, assign) BOOL isHaveGetPageVc;
-
+@property (nonatomic, copy) NaviEventBlock leftEventBlock;
+@property (nonatomic, copy) NaviEventBlock rightEventBlock;
 
 @end
 
@@ -75,6 +76,13 @@
         [self hideDefaultBackNavi];
     } else {
         [self showDefaultBackNaviWithAction];
+        
+//        [self setLeftNavWithImages:@[@"back_style1_black",@"back_style2_black",@"back_style2_black",@"back_style1_black"] andAction:^(NSInteger index) {
+//            NSLog(@"---- %ld",index);
+//        }];
+//        [self setRightNavWithImages:@[@"back_style1_black",@"back_style2_black",@"back_style2_black",@"back_style1_black"] andAction:^(NSInteger index) {
+//            NSLog(@"---- %ld",index);
+//        }];
     }
     
 //    [self handleNetWork];
@@ -278,30 +286,70 @@
 }
 
 - (UIButton *)setLeftNavWithImage:(NSString *)image target:(id)target action:(SEL)action{
-    UIBarButtonItem *base_leftBtn = [UIBarButtonItem zh_itemWithImage:[UIImage imageNamed:image] target:target action:action];
+    UIBarButtonItem *base_leftBtn = [UIBarButtonItem itemWithTarget:target action:action image:[UIImage imageNamed:image] imageEdgeInsets:UIEdgeInsetsZero];
     self.navigationItem.leftBarButtonItem = base_leftBtn;
     return (UIButton *)base_leftBtn.customView;
 }
 - (UIButton *)setLeftNavWithTitle:(NSString *)title target:(id)target action:(SEL)action{
-    UIBarButtonItem *base_leftBtn = [UIBarButtonItem zh_itemWithTitle:title target:target action:action];
+    UIBarButtonItem *base_leftBtn = [UIBarButtonItem itemWithTarget:target action:action title:title font:[UIFont systemFontOfSize:16] titleColor:nil highlightedColor:nil titleEdgeInsets:UIEdgeInsetsZero];
     self.navigationItem.leftBarButtonItem = base_leftBtn;
     return (UIButton *)base_leftBtn.customView;
 }
 - (UIButton *)setRightNavWithImage:(NSString *)image target:(id)target action:(SEL)action{
-    UIBarButtonItem *base_rightBtn = [UIBarButtonItem zh_itemWithImage:[UIImage imageNamed:image] target:target action:action];
+    UIBarButtonItem *base_rightBtn = [UIBarButtonItem itemWithTarget:target action:action image:[UIImage imageNamed:image] imageEdgeInsets:UIEdgeInsetsZero];
     self.navigationItem.rightBarButtonItem = base_rightBtn;
     return (UIButton *)base_rightBtn.customView;
 }
 - (UIButton *)setRightNavWithTitle:(NSString *)title target:(id)target action:(SEL)action{
-    UIBarButtonItem *base_rightBtn = [UIBarButtonItem zh_itemWithTitle:title target:target action:action];
+    UIBarButtonItem *base_rightBtn = [UIBarButtonItem itemWithTarget:target action:action title:title font:[UIFont systemFontOfSize:16] titleColor:nil highlightedColor:nil titleEdgeInsets:UIEdgeInsetsZero];
     self.navigationItem.rightBarButtonItem = base_rightBtn;
     return (UIButton *)base_rightBtn.customView;
 }
-- (void)setRightNavWithImages:(NSArray<NSString *> *)images target:(id)target action:(SEL)action andAction:(SEL)andAction{
-    
-    UIBarButtonItem *base_rightBtnOne = [UIBarButtonItem zh_itemWithImage:[images firstObject] target:target action:action];
-    UIBarButtonItem *base_rightBtnTwo = [UIBarButtonItem zh_itemWithImage:[images lastObject] target:target action:action];
-    self.navigationItem.rightBarButtonItems = @[base_rightBtnOne,base_rightBtnTwo];
+/// 自定义右上角多个按钮图片和事件
+- (NSMutableArray<UIButton *> *)setRightNavWithImages:(NSArray<NSString *> *)images andAction:(NaviEventBlock)event{
+    return [self setNaviWithImages:images andAction:event isLeft:NO];
+}
+/// 自定义左上角多个按钮图片和事件
+- (NSMutableArray<UIButton *> *)setLeftNavWithImages:(NSArray<NSString *> *)images andAction:(NaviEventBlock)event{
+    return [self setNaviWithImages:images andAction:event isLeft:YES];
+}
+/// 统一设置导航栏多个图片按钮
+- (NSMutableArray<UIButton *> *)setNaviWithImages:(NSArray<NSString *> *)images andAction:(NaviEventBlock)event isLeft:(BOOL)isLeft{
+    NSMutableArray *buttonItems = [NSMutableArray array];
+    NSMutableArray *buttons = [NSMutableArray array];
+    for (int i=0; i<images.count; i++) {
+        NSString *image = images[i];
+        UIBarButtonItem *buttonItem = [UIBarButtonItem itemWithTarget:self action:nil image:[UIImage imageNamed:image] imageEdgeInsets:UIEdgeInsetsZero];
+        [buttonItems addObject:buttonItem];
+        
+        UIButton *customBtn = (UIButton *)buttonItem.customView;
+        customBtn.tag = 1000+i;
+        if (isLeft) {
+            [customBtn addTarget:self action:@selector(leftNaviEventClick:) forControlEvents:UIControlEventTouchUpInside];
+        }else{
+            [customBtn addTarget:self action:@selector(leftNaviEventClick:) forControlEvents:UIControlEventTouchUpInside];
+        }
+//        customBtn.backgroundColor = UIColor.redColor;
+        [buttons addObject:customBtn];
+    }
+    if (isLeft) {
+        self.leftEventBlock = event;
+        self.navigationItem.leftBarButtonItems = buttonItems;
+    }else{
+        self.rightEventBlock = event;
+        self.navigationItem.rightBarButtonItems = buttonItems;
+    }
+    return buttons;
+}
+- (void)leftNaviEventClick:(UIButton *)sender{
+    if (self.leftEventBlock) {
+        self.leftEventBlock(sender.tag-1000);
+    }
+}
+- (void)rightNaviEventClick:(UIButton *)sender{
+    if (self.rightEventBlock) {
+        self.rightEventBlock(sender.tag-1000);
+    }
 }
 
 #pragma mark - 返回点击事件

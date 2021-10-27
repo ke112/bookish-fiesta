@@ -10,43 +10,83 @@
 
 @implementation UIBarButtonItem (ZhNavigationBar)
 
-+ (instancetype)zh_itemWithTitle:(NSString *)title target:(id)target action:(SEL)action {
-    return [self zh_itemWithTitle:title image:nil target:target action:action];
++(UIBarButtonItem *)itemWithTarget:(id)target action:(SEL)action image:(UIImage *)image {
+    return [self itemWithTarget:target action:action nomalImage:image higeLightedImage:nil imageEdgeInsets:UIEdgeInsetsZero];
 }
 
-+ (instancetype)zh_itemWithImage:(UIImage *)image target:(id)target action:(SEL)action {
-    return [self zh_itemWithTitle:nil image:image target:target action:action];
++(UIBarButtonItem *)itemWithTarget:(id)target action:(SEL)action image:(UIImage *)image imageEdgeInsets:(UIEdgeInsets)imageEdgeInsets {
+    return [self itemWithTarget:target action:action nomalImage:image higeLightedImage:nil imageEdgeInsets:imageEdgeInsets];
 }
 
-+ (instancetype)zh_itemWithTitle:(NSString *)title image:(UIImage *)image target:(id)target action:(SEL)action {
-    return [self zh_itemWithTitle:title image:image highLightImage:image target:target action:action];
-}
-
-+ (instancetype)zh_itemWithImage:(UIImage *)image highLightImage:(UIImage *)highLightImage target:(id)target action:(SEL)action {
-    return [self zh_itemWithTitle:nil image:image highLightImage:highLightImage target:target action:action];
-}
-
-+ (instancetype)zh_itemWithTitle:(NSString *)title image:(UIImage *)image highLightImage:(UIImage *)highLightImage target:(id)target action:(SEL)action {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    if (title) {
-        [button setTitle:title forState:UIControlStateNormal];
-    }
-    if (image) {
-        [button setImage:image forState:UIControlStateNormal];
-        button.imageEdgeInsets = UIEdgeInsetsMake(.0, -8.0, .0, 8.0);
-    }
-    if (highLightImage) {
-        [button setImage:highLightImage forState:UIControlStateHighlighted];
-    }
-    [button sizeToFit];
++(UIBarButtonItem *)itemWithTarget:(id)target
+                            action:(SEL)action
+                        nomalImage:(UIImage *)nomalImage
+                  higeLightedImage:(UIImage *)higeLightedImage
+                   imageEdgeInsets:(UIEdgeInsets)imageEdgeInsets {
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
     [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     
-    if (button.bounds.size.width < 44.0f) {
-        button.bounds = CGRectMake(0, 0, 44.0f, 44.0f);
+    [button setImage:[nomalImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
+    if (higeLightedImage) {
+        [button setImage:higeLightedImage forState:UIControlStateHighlighted];
     }
-    button.backgroundColor = UIColor.purpleColor;
+    [button sizeToFit];
+    if (button.bounds.size.width < 40) {
+        CGFloat width = 40 / button.bounds.size.height * button.bounds.size.width;
+        button.bounds = CGRectMake(0, 0, width, 40);
+    }
+    if (button.bounds.size.height > 40) {
+        CGFloat height = 40 / button.bounds.size.width * button.bounds.size.height;
+        button.bounds = CGRectMake(0, 0, 40, height);
+    }
+    button.imageEdgeInsets = imageEdgeInsets;
+    return [[UIBarButtonItem alloc] initWithCustomView:button];
     
-    return [[self alloc] initWithCustomView:button];
+}
+
++(UIBarButtonItem *)itemWithTarget:(id)target action:(SEL)action title:(NSString *)title {
+    return [self itemWithTarget:target action:action title:title font:nil titleColor:nil highlightedColor:nil titleEdgeInsets:UIEdgeInsetsZero];
+}
+
++(UIBarButtonItem *)itemWithTarget:(id)target action:(SEL)action title:(NSString *)title titleEdgeInsets:(UIEdgeInsets)titleEdgeInsets {
+    return [self itemWithTarget:target action:action title:title font:nil titleColor:nil highlightedColor:nil titleEdgeInsets:titleEdgeInsets];
+}
+
++(UIBarButtonItem *)itemWithTarget:(id)target
+                            action:(SEL)action
+                             title:(NSString *)title
+                              font:(UIFont *)font
+                        titleColor:(UIColor *)titleColor
+                  highlightedColor:(UIColor *)highlightedColor
+                   titleEdgeInsets:(UIEdgeInsets)titleEdgeInsets {
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+    [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    
+    [button setTitle:title forState:UIControlStateNormal];
+    button.titleLabel.font = font?font:nil;
+    [button setTitleColor:titleColor?titleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [button setTitleColor:highlightedColor?highlightedColor:nil forState:UIControlStateHighlighted];
+    
+    [button sizeToFit];
+    if (button.bounds.size.width < 40) {
+        CGFloat width = 40 / button.bounds.size.height * button.bounds.size.width;
+        button.bounds = CGRectMake(0, 0, width, 40);
+    }
+    if (button.bounds.size.height > 40) {
+        CGFloat height = 40 / button.bounds.size.width * button.bounds.size.height;
+        button.bounds = CGRectMake(0, 0, 40, height);
+    }
+    button.titleEdgeInsets = titleEdgeInsets;
+    return [[UIBarButtonItem alloc] initWithCustomView:button];
+}
+
++(UIBarButtonItem *)fixedSpaceWithWidth:(CGFloat)width {
+    
+    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    fixedSpace.width = width;
+    return fixedSpace;
 }
 
 @end

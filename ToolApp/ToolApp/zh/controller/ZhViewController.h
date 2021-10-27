@@ -101,9 +101,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIButton *)setRightNavWithImage:(NSString *)image target:(id)target action:(SEL)action;
 /**自定义右上角按钮文字和事件*/
 - (UIButton *)setRightNavWithTitle:(NSString *)title target:(id)target action:(SEL)action;
-/**自定义右上角两个按钮图片和事件*/
-- (void)setRightNavWithImages:(NSArray<NSString *> *)images target:(id)target action:(SEL)action andAction:(SEL)andAction;
 
+///导航栏事件回调
+typedef void (^NaviEventBlock)(NSInteger index);
+/// 自定义右上角多个按钮图片和事件
+- (NSMutableArray<UIButton *> *)setRightNavWithImages:(NSArray<NSString *> *)images andAction:(NaviEventBlock)event;
+/// 自定义左上角多个按钮图片和事件
+- (NSMutableArray<UIButton *> *)setLeftNavWithImages:(NSArray<NSString *> *)images andAction:(NaviEventBlock)event;
 
 /**基类返回按钮方法  默认有动画效果*/
 - (void)backEvent;
