@@ -24,8 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 从导航控制器栈中查找ViewController，没有时返回nil
 - (UIViewController *)zh_findViewController:(NSString *)className;
 
-/// viewController是push还是present的方式显示的
-- (ZHDisplaMode)zh_viewControllerDisplaMode;
+/// viewController是否是push方式显示的,反之为present
+- (BOOL)zh_PushedShow;
 
 #pragma mark ====== delete ======
 /// 删除指定的视图控制器
@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)zh_pushFromRootToClass:(UIViewController *)toClass animated:(BOOL)animated;
 
 #pragma mark ====== pop ======
-/// 返回到置顶视图控制器,push下一个视图控制器
+/// 返回到指定视图控制器
 - (void)zh_popToClass:(NSString *)toClass animated:(BOOL)animated;
 
 

@@ -24,8 +24,8 @@
     return nil;
 }
 
-/// viewController是push还是present的方式显示的
-- (ZHDisplaMode)zh_viewControllerDisplaMode {
+/// viewController是否是push方式显示的,反之为present
+- (BOOL)zh_PushedShow {
     NSArray *viewcontrollers = self.navigationController.viewControllers;
     ZHDisplaMode displaMode = zh_DisplaModePush;
     if (viewcontrollers.count > 1) {
@@ -33,12 +33,11 @@
             //push方式
             displaMode = zh_DisplaModePush;
         }
-    }
-    else {
+    }else {
         //present方式
         displaMode = zh_DisplaModePresent;
     }
-    return displaMode;
+    return displaMode == zh_DisplaModePush;
 }
 
 /// 删除指定的视图控制器
@@ -46,13 +45,15 @@
     NSMutableArray *navArray = [[NSMutableArray alloc] initWithArray:self.navigationController.viewControllers];
     NSMutableArray *vcArr = [[NSMutableArray alloc]initWithArray:navArray];
     for (NSString *className in classNames) {
-        if (className == nil || className.length==0) {
+        if (className == nil || className.length == 0) {
             break;
         }
         [navArray enumerateObjectsUsingBlock:^(UIViewController *vc, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([vc isKindOfClass:NSClassFromString(className)]) {
+            //栈顶1级不能删
+            if ([vc isKindOfClass:NSClassFromString(className)] && idx > 0) {
                 [vcArr removeObject:vc];
-                *stop = YES;
+            }else if ([vc isKindOfClass:NSClassFromString(className)] && idx == 0){
+                NSLog(@"Push栈顶控制器不能删,其余根据类名已删除");
             }
         }];
     }
@@ -66,17 +67,35 @@
 
 /// 跳转到指定的视图控制器，此方法可防止循环跳转
 - (void)zh_pushOnceClass:(UIViewController *)toClass animated:(BOOL)animated{
-    if (toClass == nil) return;
-    NSString *className = NSStringFromClass([toClass class]);
-    __weak typeof(self) ws = self;
-    [self zh_deleteClass:@[className] complete:^{
-        [ws.navigationController pushViewController:toClass animated:animated];
+    if (toClass) {
+        [self.navigationController pushViewController:toClass animated:animated];
+    }else{
+        return;
+    }
+    NSMutableArray *navArray = [[NSMutableArray alloc] initWithArray:self.navigationController.viewControllers];
+    NSMutableArray *vcArr = [[NSMutableArray alloc]initWithArray:navArray];
+    [navArray enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIViewController *vc, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (idx == navArray.count-1) {
+            //栈尾保留
+        }else{
+            //次栈尾判断不是本类就停止
+            NSString *s1 = NSStringFromClass([vc class]);
+            NSString *s2 = NSStringFromClass([toClass class]);
+            if ([s1 isEqualToString:s2]) {
+                [vcArr removeObject:vc];
+            }else{
+                *stop = YES;
+            }
+        }
     }];
+    self.navigationController.viewControllers = vcArr;
 }
 /// 返回到某个栈视图控制器,push下一个视图控制器
 - (void)zh_pushFromClass:(NSString *)fromClass toClass:(UIViewController *)toClass animated:(BOOL)animated{
     if (toClass) {
         [self.navigationController pushViewController:toClass animated:animated];
+    }else{
+        return;
     }
     NSMutableArray *navArray = [[NSMutableArray alloc] initWithArray:self.navigationController.viewControllers];
     NSMutableArray *vcArr = [[NSMutableArray alloc]initWithArray:navArray];
@@ -88,7 +107,7 @@
         }
     }];
     [navArray enumerateObjectsUsingBlock:^(UIViewController *vc, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (idx > index && ![vc isKindOfClass:[toClass class]]) {
+        if (idx > index && idx != navArray.count-1) {
             [vcArr removeObject:vc];
         }
     }];
@@ -98,12 +117,20 @@
 - (void)zh_pushUpCount:(NSInteger)count toClass:(UIViewController *)toClass animated:(BOOL)animated{
     if (toClass) {
         [self.navigationController pushViewController:toClass animated:animated];
+    }else{
+        return;
     }
     NSMutableArray *navArray = [[NSMutableArray alloc] initWithArray:self.navigationController.viewControllers];
     NSMutableArray *vcArr = [[NSMutableArray alloc]initWithArray:navArray];
-    [navArray enumerateObjectsUsingBlock:^(UIViewController *vc, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (idx >= navArray.count-count && ![vc isKindOfClass:[toClass class]]) {
-            [vcArr removeObject:vc];
+    [navArray enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIViewController *vc, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (idx == navArray.count-1) {
+            //栈尾保留
+        }else{
+            if (idx >= navArray.count-1-count) {
+                [vcArr removeObject:vc];
+            }else{
+                *stop = YES;
+            }
         }
     }];
     self.navigationController.viewControllers = vcArr;
@@ -112,23 +139,30 @@
 - (void)zh_pushFromRootCount:(NSInteger)count toClass:(UIViewController *)toClass animated:(BOOL)animated{
     if (toClass) {
         [self.navigationController pushViewController:toClass animated:animated];
+    }else{
+        return;
     }
     NSMutableArray *navArray = [[NSMutableArray alloc] initWithArray:self.navigationController.viewControllers];
     NSMutableArray *vcArr = [[NSMutableArray alloc]initWithArray:navArray];
     [navArray enumerateObjectsUsingBlock:^(UIViewController *vc, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (idx >= count && ![vc isKindOfClass:[toClass class]]) {
-            [vcArr removeObject:vc];
+        if (idx == navArray.count-1) {
+            //栈尾保留
+        }else{
+            //0是第一个
+            if (idx > count) {
+                [vcArr removeObject:vc];
+            }
         }
     }];
     self.navigationController.viewControllers = vcArr;
 }
 /// 返回到根视图控制器,push下一个视图控制器
 - (void)zh_pushFromRootToClass:(UIViewController *)toClass animated:(BOOL)animated{
-    [self zh_pushFromRootCount:1 toClass:toClass animated:animated];
+    [self zh_pushFromRootCount:0 toClass:toClass animated:animated];
 }
 
 #pragma mark ====== pop ======
-/// 返回到置顶视图控制器,push下一个视图控制器
+/// 返回到指定视图控制器
 - (void)zh_popToClass:(NSString *)toClass animated:(BOOL)animated{
     for (UIViewController *vc in self.navigationController.viewControllers) {
         if ([vc isKindOfClass:NSClassFromString(toClass)]) {

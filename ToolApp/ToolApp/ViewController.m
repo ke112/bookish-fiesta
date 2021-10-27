@@ -4,6 +4,7 @@
 //
 //  Created by zhangzhihua on 2021/7/20.
 //
+#define kindex self.navigationController.viewControllers.count
 
 #import "ViewController.h"
 #import "ZHVersionManager.h"
@@ -11,6 +12,12 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "ZhLoadingHud.h"
 #import "ZhDownloadManager.h"
+#import "UIViewController+ZhNavigation.h"
+
+#import "OneViewController.h"
+#import "ThreeViewController.h"
+#import "TwoViewController.h"
+#import "FourViewController.h"
 
 @interface ViewController ()
 
@@ -22,13 +29,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = @"导航栏";
-//    self.backgroundColor = UIColor.grayColor;
+//    self.title = [NSString stringWithFormat:@"导航栏 %ld",kindex];
+    self.title = @"1";
+    self.backgroundColor = UIColor.grayColor;
 //    self.naviBarColor = UIColor.yellowColor;
 //    self.naviTitleColor = UIColor.redColor;
 //    self.naviTitleFont = [UIFont systemFontOfSize:15];
 //    self.naviItemColor = UIColor.blackColor;
-
+    
     UILabel *lb = [[UILabel alloc]init];
     lb.text = @"222";
     [self.view addSubview:lb];
@@ -64,7 +72,7 @@
     
     UIButton *testBtn5 = [UIButton buttonWithType:UIButtonTypeCustom];
     [testBtn5 setTitle:@"testBtn" forState:UIControlStateNormal];
-    [testBtn5 setTitleColor:UIColor.redColor forState:UIControlStateNormal];
+    [testBtn5 setTitleColor:UIColor.purpleColor forState:UIControlStateNormal];
     [testBtn5 addTarget:self action:@selector(testClick5) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:testBtn5];
     testBtn5.frame = CGRectMake(100, 360, 60, 20);
@@ -139,7 +147,28 @@
 }
 
 - (void)testClick5{
-    [self.navigationController pushViewController:[ViewController new] animated:YES];
+////    if (kindex == 2) {
+////        BOOL mode = [self zh_viewControllerIsPushedShow];
+////        if (mode) {
+////            KKLog(@"push mode : %ld",mode);
+////        } else {
+////            KKLog(@"present mode : %ld",mode);
+////        }
+////
+////    }else
+//    if (kindex == 5) {
+////        [self zh_deleteClass:@[@"ViewController"] complete:^{
+////            KKLog(@"删完了");
+////        }];
+////        [self zh_pushOnceClass:[ViewController new] animated:YES];
+////        [self zh_pushFromClass:@"ViewController" toClass:[ViewController new] animated:YES];
+////        [self zh_pushUpCount:2 toClass:[ViewController new] animated:YES];
+//        [self zh_pushFromRootCount:2 toClass:[ViewController new] animated:YES];
+//
+//    }else{
+//
+//    }
+    [self.navigationController pushViewController:[OneViewController new] animated:YES];
 }
 
 @end

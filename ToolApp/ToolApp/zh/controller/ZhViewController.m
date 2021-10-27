@@ -34,7 +34,7 @@
 @implementation ZhViewController
 
 - (void)dealloc{
-    NSLog(@"\nvc类 %@ 销毁了\n",NSStringFromClass([self class]));
+    NSLog(@"\nvc类 %@ 销毁了\n",self);
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
