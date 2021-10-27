@@ -71,7 +71,11 @@
     self.pageNum = 1;
     self.pageSize = 10;
     
-//    [self showDefaultBackNaviWithAction];
+    if (self.navigationController.viewControllers.count==1) {
+        [self hideDefaultBackNavi];
+    } else {
+        [self showDefaultBackNaviWithAction];
+    }
     
 //    [self handleNetWork];
     __weak typeof(self) ws = self;
@@ -264,17 +268,17 @@
     return [self showDefaultBackNaviWithAction:@selector(backEvent)];
 }
 - (UIButton *)showWhiteBackNaviWithAction{
-    return [self setLeftNavWithImage:@"common_back_FFF_icon" target:self action:@selector(backEvent)];
+    return [self setLeftNavWithImage:@"back_style1_white" target:self action:@selector(backEvent)];
 }
 - (UIButton *)showDefaultBackNaviWithAction:(SEL)action{
-    return [self setLeftNavWithImage:@"project_back" target:self action:action];
+    return [self setLeftNavWithImage:@"back_style1_black" target:self action:action];
 }
 - (UIButton *)showWhiteBackNaviWithAction:(SEL)action{
-    return [self setLeftNavWithImage:@"common_back_FFF_icon" target:self action:action];
+    return [self setLeftNavWithImage:@"back_style1_white" target:self action:action];
 }
 
 - (UIButton *)setLeftNavWithImage:(NSString *)image target:(id)target action:(SEL)action{
-    UIBarButtonItem *base_leftBtn = [UIBarButtonItem zh_itemWithImage:image target:target action:action];
+    UIBarButtonItem *base_leftBtn = [UIBarButtonItem zh_itemWithImage:[UIImage imageNamed:image] target:target action:action];
     self.navigationItem.leftBarButtonItem = base_leftBtn;
     return (UIButton *)base_leftBtn.customView;
 }
@@ -284,7 +288,7 @@
     return (UIButton *)base_leftBtn.customView;
 }
 - (UIButton *)setRightNavWithImage:(NSString *)image target:(id)target action:(SEL)action{
-    UIBarButtonItem *base_rightBtn = [UIBarButtonItem zh_itemWithImage:image target:target action:action];
+    UIBarButtonItem *base_rightBtn = [UIBarButtonItem zh_itemWithImage:[UIImage imageNamed:image] target:target action:action];
     self.navigationItem.rightBarButtonItem = base_rightBtn;
     return (UIButton *)base_rightBtn.customView;
 }
