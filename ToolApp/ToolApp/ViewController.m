@@ -25,6 +25,10 @@
 
 @implementation ViewController
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -32,7 +36,7 @@
 //    self.title = [NSString stringWithFormat:@"导航栏 %ld",kindex];
     self.title = @"1";
     self.backgroundColor = UIColor.grayColor;
-//    self.naviBarColor = UIColor.yellowColor;
+    self.naviBarColor = UIColor.yellowColor;
 //    self.naviTitleColor = UIColor.redColor;
 //    self.naviTitleFont = [UIFont systemFontOfSize:15];
 //    self.naviItemColor = UIColor.blackColor;

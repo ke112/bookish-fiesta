@@ -17,11 +17,20 @@
 
 @implementation TwoViewController
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"3";
     self.backgroundColor = UIColor.greenColor;
+    self.naviBarColor = UIColor.systemPinkColor;
+    [self updateStatusBarStyleDark:NO];
+//    [self updateStatusBarHidden:YES];
+    [self updateNaviBarHidden:YES];
     
     UIButton *testBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [testBtn setTitle:@"testBtn" forState:UIControlStateNormal];

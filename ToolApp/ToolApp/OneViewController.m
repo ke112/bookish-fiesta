@@ -17,11 +17,17 @@
 
 @implementation OneViewController
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"2";
     self.backgroundColor = UIColor.redColor;
+    self.naviBarColor = UIColor.blueColor;
+    [self updateStatusBarStyleDark:NO];
     
     UIButton *testBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [testBtn setTitle:@"testBtn" forState:UIControlStateNormal];

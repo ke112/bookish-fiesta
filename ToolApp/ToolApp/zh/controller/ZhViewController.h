@@ -28,14 +28,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) UICollectionViewScrollDirection layoutDirection;
 /// 集合视图
 @property (nonatomic, strong, nullable) ZhCollectionView *collectionView;
-
 /// 数据源
 @property (nonatomic, strong) NSMutableArray *dataSource;
 /// 请求页码数
 @property (nonatomic, assign) NSInteger pageNum;
 /// 请求个数
 @property (nonatomic, assign) NSInteger pageSize;
-
 /// 跳转vc的传参
 @property (nonatomic, strong) NSMutableDictionary *vcParam;
 
@@ -49,10 +47,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGFloat zh_emptyOffset;
 /// 空视图在垂直方向的纵坐标大小
 @property (nonatomic, assign) CGFloat zh_emptyOffY;
-
 /// 禁止侧滑 设为YES
 @property (nonatomic, assign) BOOL disableSideslip;
 
+#pragma mark ====== 导航栏状态栏管理 ======
 /// 背景色
 @property (nonatomic, strong) UIColor *backgroundColor;
 /// 导航栏背景色
@@ -63,6 +61,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIFont *naviTitleFont;
 /// 导航栏左右按钮颜色
 @property (nonatomic, strong) UIColor *naviItemColor;
+
+/// 更新导航栏黑色显示风格
+- (void)updateStatusBarStyleDark:(BOOL)isDark;
+/// 是否隐藏状态栏
+- (void)updateStatusBarHidden:(BOOL)hidden;
+/// 是否隐藏导航栏
+- (void)updateNaviBarHidden:(BOOL)hidden;
 
 
 /// 手动隐藏emptyView
@@ -81,7 +86,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)zh_hideFooterEmptyView;
 /// 显示emptyFooterView
 - (void)zh_showFooterEmptyView:(ZhEmptyLoadState)state;
-
 
 
 /**设置默认黑色返回箭头*/
@@ -122,29 +126,22 @@ typedef void (^NaviEventBlock)(NSInteger index);
 #pragma mark ====== 子类需要重写方法 ======
 /// 设置导航栏
 - (void)setNavi;
-
 /// 设置界面布局
 - (void)setUI;
-
 /// 获取数据
 - (void)setData;
 
 #pragma mark ====== 分页需要重写的方法 ======
 /// 重置分页数据
 - (void)pages_loadFirst;
-
 /// 分页请求的重写方法
 - (void)pages_loadData;
-
 /// 上拉加载的方法 (内部使用)
 //- (void)pages_loadMore;
-
 /// 添加下拉刷新
 - (void)pages_addDownPullRefresh;
-
 /// 添加上拉刷新
 - (void)pages_addUpPullRefresh;
-
 /// 结束刷新状态
 - (void)endRefreshState;
 

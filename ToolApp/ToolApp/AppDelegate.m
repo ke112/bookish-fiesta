@@ -8,6 +8,7 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import "ZHHeader.h"
+#import "ZhNavigationController.h"
 
 @interface AppDelegate ()
 
@@ -21,7 +22,7 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
-    self.window.rootViewController = [[UINavigationController alloc]initWithRootViewController:[ViewController new]];
+    self.window.rootViewController = [[ZhNavigationController alloc]initWithRootViewController:[ViewController new]];
     [self.window makeKeyAndVisible];
 
     

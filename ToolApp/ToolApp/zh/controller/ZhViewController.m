@@ -25,21 +25,46 @@
 #endif
 
 @interface ZhViewController ()
-/// 子类vc是否有分页请求
+/// (内部使用)子类vc是否有分页请求
 @property (nonatomic, assign) BOOL isHaveGetPageVc;
+/// (内部使用)2个导航点击的回调
 @property (nonatomic, copy) NaviEventBlock leftEventBlock;
 @property (nonatomic, copy) NaviEventBlock rightEventBlock;
+/// (内部使用)状态栏样式
+@property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
+/// (内部使用)状态栏隐藏
+@property (nonatomic, assign) BOOL statusBarHidden;
+/// (内部使用)导航栏隐藏
+@property (nonatomic, assign) BOOL naviBarHidden;
 
 @end
 
 @implementation ZhViewController
 
+/// 控制状态栏的样式 (要刷新状态栏，让其重新执行该方法需要调用{-setNeedsStatusBarAppearanceUpdate})
+- (UIStatusBarStyle)preferredStatusBarStyle{
+    return _statusBarStyle;
+}
+/// 状态栏显示还是隐藏 (要刷新状态栏，让其重新执行该方法需要调用{-setNeedsStatusBarAppearanceUpdate})
+- (BOOL)prefersStatusBarHidden{
+    return _statusBarHidden;
+}
+/// 状态栏改变的动画，这个动画只影响状态栏的显示和隐藏
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation{
+    return UIStatusBarAnimationSlide;
+}
+/// 当前类销毁
 - (void)dealloc{
     NSLog(@"\nvc类 %@ 销毁了\n",self);
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
+    if (_naviBarHidden && self.navigationController.navigationBar.hidden == NO) {
+        NSLog(@"要隐藏");
+        [self.navigationController setNavigationBarHidden:_naviBarHidden animated:animated];
+    }else{
+        [self configNaviBar];
+    }
 }
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -52,37 +77,31 @@
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     }
+    if (_naviBarHidden && self.navigationController.navigationBar.hidden == YES) {
+        NSLog(@"要显示");
+        [self.navigationController setNavigationBarHidden:!_naviBarHidden animated:animated];
+    }
+}
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
     self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
     self.navigationController.navigationBar.translucent = NO;
     
     self.backgroundColor = kDefaultBackgrouncColor;
-    if (@available(iOS 13.0, *)) {
-        self.naviBarColor = UIColor.systemBackgroundColor;
-    }else{
-        self.naviBarColor = UIColor.whiteColor;
-    }
     
     self.tableStyle = UITableViewStyleGrouped;
     self.pageNum = 1;
     self.pageSize = 10;
     
-    if (self.navigationController.viewControllers.count==1) {
+    if (self.navigationController.viewControllers.count == 1) {
         [self hideDefaultBackNavi];
     } else {
         [self showDefaultBackNaviWithAction];
-        
-//        [self setLeftNavWithImages:@[@"back_style1_black",@"back_style2_black",@"back_style2_black",@"back_style1_black"] andAction:^(NSInteger index) {
-//            NSLog(@"---- %ld",index);
-//        }];
-//        [self setRightNavWithImages:@[@"back_style1_black",@"back_style2_black",@"back_style2_black",@"back_style1_black"] andAction:^(NSInteger index) {
-//            NSLog(@"---- %ld",index);
-//        }];
     }
     
 //    [self handleNetWork];
@@ -93,23 +112,22 @@
 
 }
 
+#pragma mark ====== 处理网络相关问题 ======
 /// 处理网络相关问题
 - (void)handleNetWork{
     if ([UIDevice zh_isAirPlane]) {
         [ZhAlertTool showAlertWithTitle:@"关闭飞行模式或使用无线局域网来访问数据" message:nil cancel:@"好" sure:@"设置" cancelBlock:^{
-            
         } sureBlock:^{
             [ZhSystemTool openAppPrivacySettings];
         }];
     } else {
         if (![UIDevice zh_isNetwork]) {
             [ZhAlertTool showAlertWithTitle:@"打开蜂窝数据或使用无线局域网访问数据" message:nil cancel:@"好" sure:@"设置" cancelBlock:^{
-                
             } sureBlock:^{
                 [ZhSystemTool openAppPrivacySettings];
             }];
         }else{
-            NSLog(@"正常有网");
+//            NSLog(@"正常有网");
         }
     }
 }
@@ -194,8 +212,6 @@
         self.refreshDataBlock(self.zh_emptyLoadState);
     }
 }
-
-#pragma mark ====== FooterView管理EmptyView ======
 /// 隐藏emptyvView
 - (void)zh_hideFooterEmptyView{
     self.tableView.tableFooterView = nil;
@@ -206,7 +222,7 @@
     self.tableView.tableFooterView = self.footerEmptyView;
     self.footerEmptyView.state = state;
 }
-
+#pragma mark ====== 导航栏状态栏管理 ======
 /// 背景色
 - (void)setBackgroundColor:(UIColor *)backgroundColor{
     _backgroundColor = backgroundColor;
@@ -234,18 +250,55 @@
     _naviItemColor = naviItemColor;
     [self configNaviBar];
 }
-
+/// 更新导航栏黑色显示风格
+- (void)updateStatusBarStyleDark:(BOOL)isDark{
+    if (isDark) {
+        [self showDefaultBackNaviWithAction];
+        if (@available(iOS 13.0, *)) {
+            self.naviTitleColor = UIColor.labelColor;
+            self.naviItemColor = UIColor.labelColor;
+        }else{
+            self.naviTitleColor = UIColor.blackColor;
+            self.naviItemColor = UIColor.blackColor;
+        }
+        _statusBarStyle = UIStatusBarStyleDefault;
+    }else{
+        [self showWhiteBackNaviWithAction];
+        if (@available(iOS 13.0, *)) {
+            self.naviTitleColor = UIColor.systemBackgroundColor;
+            self.naviItemColor = UIColor.systemBackgroundColor;
+        }else{
+            self.naviTitleColor = UIColor.whiteColor;
+            self.naviItemColor = UIColor.whiteColor;
+        }
+        _statusBarStyle = UIStatusBarStyleLightContent;
+    }
+    [self configNaviBar];
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+/// 是否隐藏状态栏
+- (void)updateStatusBarHidden:(BOOL)hidden{
+    _statusBarHidden = hidden;
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+/// 是否隐藏导航栏
+- (void)updateNaviBarHidden:(BOOL)hidden{
+    _naviBarHidden = hidden;
+}
 /// 统一设置
 - (void)configNaviBar{
     ///导航栏背景色
-    UIColor *naviBarColor = self.naviBarColor ? : UIColor.whiteColor;
+    UIColor *naviBarColor;
     ///导航栏标题色
     UIColor *naviTitleColor;
+    ///导航栏左右按钮颜色
     UIColor *naviItemColor;
     if (@available(iOS 13.0, *)) {
+        naviBarColor = self.naviBarColor ? : UIColor.systemBackgroundColor;
         naviTitleColor = self.naviTitleColor ? : UIColor.labelColor;
         naviItemColor = self.naviItemColor ? : UIColor.labelColor;
     }else{
+        naviBarColor = self.naviBarColor ? : UIColor.whiteColor;
         naviTitleColor = self.naviTitleColor ? : UIColor.blackColor;
         naviItemColor = self.naviItemColor ? : UIColor.blackColor;
     }
@@ -256,7 +309,6 @@
         NSForegroundColorAttributeName : naviTitleColor,
         NSFontAttributeName : naviTitleFont,
     };
-    
     if (@available(iOS 13.0, *)) {
         UINavigationBarAppearance *appearance = [[UINavigationBarAppearance alloc] init];
         appearance.backgroundColor = naviBarColor;  // 背景色
@@ -329,7 +381,7 @@
         }else{
             [customBtn addTarget:self action:@selector(leftNaviEventClick:) forControlEvents:UIControlEventTouchUpInside];
         }
-//        customBtn.backgroundColor = UIColor.redColor;
+//        customBtn.backgroundColor = kRandomColor;
         [buttons addObject:customBtn];
     }
     if (isLeft) {
@@ -372,7 +424,6 @@
         [self dismissViewControllerAnimated:NO completion:nil];
     }
 }
-
 - (void)hideDefaultBackNavi{
     self.navigationItem.leftBarButtonItem = nil;
     self.navigationItem.hidesBackButton = YES;
@@ -381,15 +432,10 @@
     self.navigationItem.rightBarButtonItem = nil;
 }
 #pragma mark ====== 子类需要重写方法 ======
-- (void)setNavi{
-    
-}
-- (void)setUI{
-    
-}
-- (void)setData{
-    
-}
+- (void)setNavi{}
+- (void)setUI{}
+- (void)setData{}
+
 - (void)setTableStyle:(UITableViewStyle)tableStyle{
     _tableStyle = tableStyle;
     self.tableView = nil;
@@ -481,14 +527,13 @@
         //标记子类的vc具有分页请求
         self.isHaveGetPageVc = YES;
     }
-    
     __weak typeof(self) ws = self;
     NSMutableDictionary *param = [NSMutableDictionary dictionaryWithDictionary:parameters];
     [param setValue:@(self.pageNum) forKey:@"pageNumber"];
     [param setValue:@(self.pageSize) forKey:@"pageSize"];
-    KKLog(@"get分页查询的 param : %@",param);
+//    KKLog(@"get分页查询的 param : %@",param);
     NSURLSessionDataTask *tast = [NetWorkTool GET:interface parameters:param showLoading:showLoading success:^(id  _Nonnull responseObject) {
-        KKLog(@"get分页查询的 总条数: %@ 总页码: %@",[responseObject objectForKey:@"total"],[responseObject objectForKey:@"totalPages"]);
+//        KKLog(@"get分页查询的 总条数: %@ 总页码: %@",[responseObject objectForKey:@"total"],[responseObject objectForKey:@"totalPages"]);
         [ws endRefreshState];
         NSArray *data = [modelClass.class zh_modelArrayWithJsonArray:[responseObject objectForKey:@"list"]];
         if (ws.pageNum == 1) {
@@ -513,19 +558,15 @@
 
 #pragma mark TableView代理方法
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    // Return the number of sections.
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    // Return the number of rows in the section.
     return self.dataSource.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"UITableViewCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
     // Configure the cell...
-    
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -552,9 +593,7 @@
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"UICollectionViewCell";
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-    
     // Configure the cell...
-    
     return cell;
 }
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -574,7 +613,6 @@
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     return UIEdgeInsetsMake(0, 0, 0, 0);
 }
-
 
 #pragma mark 懒加载
 - (UITableView *)tableView{

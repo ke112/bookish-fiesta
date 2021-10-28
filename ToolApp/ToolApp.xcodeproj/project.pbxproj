@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		29032CDF27200472000C2259 /* ZhMapNavigator.m in Sources */ = {isa = PBXBuildFile; fileRef = 29032CDD27200471000C2259 /* ZhMapNavigator.m */; };
 		292F3C9F27294DF000F189FC /* UINavigationSXFixSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = 292F3C9E27294DF000F189FC /* UINavigationSXFixSpace.m */; };
+		29332814272A916B0099B3F9 /* ZhNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29332813272A916B0099B3F9 /* ZhNavigationController.m */; };
 		295A6D322728031400A943FC /* OneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 295A6D312728031400A943FC /* OneViewController.m */; };
 		295A6D352728032000A943FC /* TwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 295A6D342728032000A943FC /* TwoViewController.m */; };
 		295A6D382728032B00A943FC /* ThreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 295A6D372728032B00A943FC /* ThreeViewController.m */; };
@@ -79,6 +80,8 @@
 		29032CDE27200472000C2259 /* ZhMapNavigator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZhMapNavigator.h; sourceTree = "<group>"; };
 		292F3C9D27294DF000F189FC /* UINavigationSXFixSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINavigationSXFixSpace.h; sourceTree = "<group>"; };
 		292F3C9E27294DF000F189FC /* UINavigationSXFixSpace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINavigationSXFixSpace.m; sourceTree = "<group>"; };
+		29332812272A916B0099B3F9 /* ZhNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZhNavigationController.h; sourceTree = "<group>"; };
+		29332813272A916B0099B3F9 /* ZhNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZhNavigationController.m; sourceTree = "<group>"; };
 		295A6D302728031400A943FC /* OneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OneViewController.h; sourceTree = "<group>"; };
 		295A6D312728031400A943FC /* OneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OneViewController.m; sourceTree = "<group>"; };
 		295A6D332728032000A943FC /* TwoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TwoViewController.h; sourceTree = "<group>"; };
@@ -352,6 +355,8 @@
 			children = (
 				29C843F126A908B000912E87 /* ZhViewController.h */,
 				29C843F226A908B000912E87 /* ZhViewController.m */,
+				29332812272A916B0099B3F9 /* ZhNavigationController.h */,
+				29332813272A916B0099B3F9 /* ZhNavigationController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -647,6 +652,7 @@
 				29C8442726A9095300912E87 /* UIScrollView+ZhTabExtension.m in Sources */,
 				296E7EE126A6E155008ACAE7 /* ZHVersionManager.m in Sources */,
 				29C8440926A908B000912E87 /* UIButton+ZhExpandAera.m in Sources */,
+				29332814272A916B0099B3F9 /* ZhNavigationController.m in Sources */,
 				295A6D352728032000A943FC /* TwoViewController.m in Sources */,
 				29032CDF27200472000C2259 /* ZhMapNavigator.m in Sources */,
 				29C8443626A90A5E00912E87 /* ZhDownloadManager.m in Sources */,

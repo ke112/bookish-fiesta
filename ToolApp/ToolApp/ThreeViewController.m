@@ -23,6 +23,7 @@
     // Do any additional setup after loading the view.
     self.title = @"4";
     self.backgroundColor = UIColor.blueColor;
+    [self updateNaviBarHidden:YES];
     
     UIButton *testBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [testBtn setTitle:@"testBtn" forState:UIControlStateNormal];
