@@ -33,7 +33,7 @@
 		29C8440E26A908B000912E87 /* Foundation+ZhLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C843D726A908B000912E87 /* Foundation+ZhLog.m */; };
 		29C8440F26A908B000912E87 /* NSString+ZhExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C843D826A908B000912E87 /* NSString+ZhExt.m */; };
 		29C8441026A908B000912E87 /* UIButton+ZhEdge.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C843DA26A908B000912E87 /* UIButton+ZhEdge.m */; };
-		29C8441126A908B000912E87 /* UITextView+Zh.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C843DE26A908B000912E87 /* UITextView+Zh.m */; };
+		29C8441126A908B000912E87 /* UITextView+ZhInputLimit.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C843DE26A908B000912E87 /* UITextView+ZhInputLimit.m */; };
 		29C8441326A908B000912E87 /* ZhImageTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C843E426A908B000912E87 /* ZhImageTool.m */; };
 		29C8441526A908B000912E87 /* province.json in Resources */ = {isa = PBXBuildFile; fileRef = 29C843E726A908B000912E87 /* province.json */; };
 		29C8441626A908B000912E87 /* ZhAlertTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C843E826A908B000912E87 /* ZhAlertTool.m */; };
@@ -51,7 +51,6 @@
 		29C8442426A908F100912E87 /* ZhTimerManage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C8442226A908F100912E87 /* ZhTimerManage.m */; };
 		29C8442726A9095300912E87 /* UIScrollView+ZhTabExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C8442526A9095300912E87 /* UIScrollView+ZhTabExtension.m */; };
 		29C8442A26A9098800912E87 /* UITextField+ZhInputLimit.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C8442826A9098800912E87 /* UITextField+ZhInputLimit.m */; };
-		29C8442D26A9098D00912E87 /* UITextView+ZhInputLimit.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C8442B26A9098D00912E87 /* UITextView+ZhInputLimit.m */; };
 		29C8443026A909A300912E87 /* UICollectionView+DynamicCacheHeightLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C8442F26A909A300912E87 /* UICollectionView+DynamicCacheHeightLayoutCell.m */; };
 		29C8443326A90A0900912E87 /* UIButton+ZhSubmitting.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C8443226A90A0900912E87 /* UIButton+ZhSubmitting.m */; };
 		29C8443626A90A5E00912E87 /* ZhDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C8443526A90A5E00912E87 /* ZhDownloadManager.m */; };
@@ -112,7 +111,7 @@
 		29C843C626A908B000912E87 /* UIDevice+ZhExt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+ZhExt.m"; sourceTree = "<group>"; };
 		29C843C826A908B000912E87 /* UIButton+ZhEdge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+ZhEdge.h"; sourceTree = "<group>"; };
 		29C843C926A908B000912E87 /* UIView+ZhExt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZhExt.m"; sourceTree = "<group>"; };
-		29C843CC26A908B000912E87 /* UITextView+Zh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+Zh.h"; sourceTree = "<group>"; };
+		29C843CC26A908B000912E87 /* UITextView+ZhInputLimit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+ZhInputLimit.h"; sourceTree = "<group>"; };
 		29C843CD26A908B000912E87 /* UIButton+ZhExpandAera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+ZhExpandAera.m"; sourceTree = "<group>"; };
 		29C843CE26A908B000912E87 /* UIView+ZhDrawCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ZhDrawCategory.h"; sourceTree = "<group>"; };
 		29C843CF26A908B000912E87 /* UIColor+ZhExt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ZhExt.m"; sourceTree = "<group>"; };
@@ -128,7 +127,7 @@
 		29C843DA26A908B000912E87 /* UIButton+ZhEdge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+ZhEdge.m"; sourceTree = "<group>"; };
 		29C843DB26A908B000912E87 /* ZHHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZHHeader.h; sourceTree = "<group>"; };
 		29C843DD26A908B000912E87 /* UIButton+ZhExpandAera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+ZhExpandAera.h"; sourceTree = "<group>"; };
-		29C843DE26A908B000912E87 /* UITextView+Zh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Zh.m"; sourceTree = "<group>"; };
+		29C843DE26A908B000912E87 /* UITextView+ZhInputLimit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+ZhInputLimit.m"; sourceTree = "<group>"; };
 		29C843E126A908B000912E87 /* UIViewController+ZhNavigation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ZhNavigation.h"; sourceTree = "<group>"; };
 		29C843E226A908B000912E87 /* UILabel+Zhext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Zhext.h"; sourceTree = "<group>"; };
 		29C843E426A908B000912E87 /* ZhImageTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZhImageTool.m; sourceTree = "<group>"; };
@@ -163,8 +162,6 @@
 		29C8442626A9095300912E87 /* UIScrollView+ZhTabExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+ZhTabExtension.h"; sourceTree = "<group>"; };
 		29C8442826A9098800912E87 /* UITextField+ZhInputLimit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+ZhInputLimit.m"; sourceTree = "<group>"; };
 		29C8442926A9098800912E87 /* UITextField+ZhInputLimit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+ZhInputLimit.h"; sourceTree = "<group>"; };
-		29C8442B26A9098D00912E87 /* UITextView+ZhInputLimit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+ZhInputLimit.m"; sourceTree = "<group>"; };
-		29C8442C26A9098D00912E87 /* UITextView+ZhInputLimit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+ZhInputLimit.h"; sourceTree = "<group>"; };
 		29C8442E26A909A300912E87 /* UICollectionView+DynamicCacheHeightLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+DynamicCacheHeightLayoutCell.h"; sourceTree = "<group>"; };
 		29C8442F26A909A300912E87 /* UICollectionView+DynamicCacheHeightLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+DynamicCacheHeightLayoutCell.m"; sourceTree = "<group>"; };
 		29C8443126A90A0900912E87 /* UIButton+ZhSubmitting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+ZhSubmitting.h"; sourceTree = "<group>"; };
@@ -447,10 +444,8 @@
 				29E8D65726A94D0000F2EEA2 /* UITabBar+ZhBadge.m */,
 				29C8442926A9098800912E87 /* UITextField+ZhInputLimit.h */,
 				29C8442826A9098800912E87 /* UITextField+ZhInputLimit.m */,
-				29C843CC26A908B000912E87 /* UITextView+Zh.h */,
-				29C843DE26A908B000912E87 /* UITextView+Zh.m */,
-				29C8442C26A9098D00912E87 /* UITextView+ZhInputLimit.h */,
-				29C8442B26A9098D00912E87 /* UITextView+ZhInputLimit.m */,
+				29C843CC26A908B000912E87 /* UITextView+ZhInputLimit.h */,
+				29C843DE26A908B000912E87 /* UITextView+ZhInputLimit.m */,
 				29C843CE26A908B000912E87 /* UIView+ZhDrawCategory.h */,
 				29C843EF26A908B000912E87 /* UIView+ZhDrawCategory.m */,
 				29C843D926A908B000912E87 /* UIView+ZhExt.h */,
@@ -652,7 +647,6 @@
 				29032CDF27200472000C2259 /* ZhMapNavigator.m in Sources */,
 				29C8443626A90A5E00912E87 /* ZhDownloadManager.m in Sources */,
 				29C8440B26A908B000912E87 /* UILabel+Zhext.m in Sources */,
-				29C8442D26A9098D00912E87 /* UITextView+ZhInputLimit.m in Sources */,
 				296E7EBE26A6B6D3008ACAE7 /* AppDelegate.m in Sources */,
 				29E8D67526A96FF900F2EEA2 /* ZHAlertAction.m in Sources */,
 				29E8D67426A96FF900F2EEA2 /* ZHTouchOrFaceID.m in Sources */,
@@ -671,7 +665,7 @@
 				29C8441D26A908B000912E87 /* ZhFooterEmptyView.m in Sources */,
 				29C8440C26A908B000912E87 /* UIViewController+ZhNavigation.m in Sources */,
 				29DC7FA527040E4800A62D52 /* NSObject+ZhExt.m in Sources */,
-				29C8441126A908B000912E87 /* UITextView+Zh.m in Sources */,
+				29C8441126A908B000912E87 /* UITextView+ZhInputLimit.m in Sources */,
 				29C8443026A909A300912E87 /* UICollectionView+DynamicCacheHeightLayoutCell.m in Sources */,
 				29C8441726A908B000912E87 /* ZhSystemTool.m in Sources */,
 				295A6D322728031400A943FC /* OneViewController.m in Sources */,

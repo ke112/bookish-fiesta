@@ -1,9 +1,9 @@
 //
-//  UITextField+ZhInputLimit.m
-//  JKCategories (https://github.com/shaojiankui/JKCategories)
+//  UITextView+Zh.h
+//  OriginalPro
 //
-//  Created by Jakey on 2016/11/29.
-//  Copyright © 2016年 www.skyfox.org. All rights reserved.
+//  Created by zhangzhihua on 2019/3/1.
+//  Copyright © 2019 zhangzhihua. All rights reserved.
 //
 
 #import "UITextField+ZhInputLimit.h"

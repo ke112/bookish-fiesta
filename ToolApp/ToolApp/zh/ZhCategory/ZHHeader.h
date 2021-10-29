@@ -22,7 +22,6 @@
 #import "UILabel+Zhext.h"
 #import "UIImage+ZhExt.h"
 #import "UIImageView+ZhExt.h"
-#import "UITextView+Zh.h"
 #import "UIViewController+ZhNavigation.h"
 
 #import "ZhLoadingHud.h"
