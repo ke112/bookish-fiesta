@@ -34,8 +34,6 @@
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 /// (内部使用)状态栏隐藏
 @property (nonatomic, assign) BOOL statusBarHidden;
-/// (内部使用)导航栏隐藏
-@property (nonatomic, assign) BOOL naviBarHidden;
 
 @end
 
@@ -59,11 +57,12 @@
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    if (_naviBarHidden && self.navigationController.navigationBar.hidden == NO) {
-        NSLog(@"要隐藏");
-        [self.navigationController setNavigationBarHidden:_naviBarHidden animated:animated];
-    }else{
-        [self configNaviBar];
+    
+    [self configNaviBar];
+    
+    NSString *naviAlpha = self.zh_naviAlpha;
+    if (self.navigationController.navigationBar.alpha != naviAlpha.floatValue) {
+        self.navigationController.navigationBar.alpha = naviAlpha.floatValue;
     }
 }
 -(void)viewDidAppear:(BOOL)animated {
@@ -77,10 +76,6 @@
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     }
-    if (_naviBarHidden && self.navigationController.navigationBar.hidden == YES) {
-        NSLog(@"要显示");
-        [self.navigationController setNavigationBarHidden:!_naviBarHidden animated:animated];
-    }
 }
 - (void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
@@ -88,28 +83,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
-    self.navigationController.navigationBar.translucent = NO;
-    
+    self.navigationController.navigationBar.translucent = YES;
     self.backgroundColor = kDefaultBackgrouncColor;
-    
     self.tableStyle = UITableViewStyleGrouped;
     self.pageNum = 1;
     self.pageSize = 10;
-    
     if (self.navigationController.viewControllers.count == 1) {
         [self hideDefaultBackNavi];
     } else {
         [self showDefaultBackNaviWithAction];
     }
-    
 //    [self handleNetWork];
     __weak typeof(self) ws = self;
     self.footerEmptyView.refreshDataBlock = ^(ZhEmptyLoadState state) {
         ws.refreshDataBlock(state);
     };
-
 }
 
 #pragma mark ====== 处理网络相关问题 ======
@@ -281,9 +270,19 @@
     _statusBarHidden = hidden;
     [self setNeedsStatusBarAppearanceUpdate];
 }
+/// 导航栏透明度
+- (void)setNaviAlpha:(float)naviAlpha{
+    _naviAlpha = naviAlpha;
+    self.zh_naviAlpha = [NSString stringWithFormat:@"%f",naviAlpha];
+}
 /// 是否隐藏导航栏
-- (void)updateNaviBarHidden:(BOOL)hidden{
-    _naviBarHidden = hidden;
+- (void)setNaviBarHidden:(BOOL)naviBarHidden{
+    _naviBarHidden = naviBarHidden;
+    if (naviBarHidden) {
+        self.naviAlpha = 0;
+    }else{
+        self.naviAlpha = 1;
+    }
 }
 /// 统一设置
 - (void)configNaviBar{
@@ -324,17 +323,12 @@
     self.navigationController.navigationBar.tintColor = naviItemColor;
 }
 
+#pragma mark ====== 导航按钮管理 ======
 - (UIButton *)showDefaultBackNaviWithAction{
-    return [self showDefaultBackNaviWithAction:@selector(backEvent)];
+    return [self setLeftNavWithImage:@"back_style1_black" target:self action:@selector(backEvent)];
 }
 - (UIButton *)showWhiteBackNaviWithAction{
     return [self setLeftNavWithImage:@"back_style1_white" target:self action:@selector(backEvent)];
-}
-- (UIButton *)showDefaultBackNaviWithAction:(SEL)action{
-    return [self setLeftNavWithImage:@"back_style1_black" target:self action:action];
-}
-- (UIButton *)showWhiteBackNaviWithAction:(SEL)action{
-    return [self setLeftNavWithImage:@"back_style1_white" target:self action:action];
 }
 
 - (UIButton *)setLeftNavWithImage:(NSString *)image target:(id)target action:(SEL)action{
@@ -407,34 +401,47 @@
 #pragma mark - 返回点击事件
 - (void)backEvent{
     [self.view endEditing:YES];
-    NSInteger count = self.navigationController.viewControllers.count;
-    if (count > 1) {
-        [self.navigationController popViewControllerAnimated:YES];
+    if (self.onClickLeftButton) {
+        self.onClickLeftButton();
     }else{
-        [self dismissViewControllerAnimated:YES completion:nil];
+        if (self.navigationController) {
+            if (self.navigationController.viewControllers.count == 1) {
+                if (self.presentingViewController) {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }
+            } else {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        } else if(self.presentingViewController) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
     }
 }
 /**基类返回按钮方法  没有动画效果*/
 - (void)backEventNoAnimation{
     [self.view endEditing:YES];
-    NSInteger count = self.navigationController.viewControllers.count;
-    if (count > 1) {
-        [self.navigationController popViewControllerAnimated:NO];
-    }else{
+    if (self.navigationController) {
+        if (self.navigationController.viewControllers.count == 1) {
+            if (self.presentingViewController) {
+                [self dismissViewControllerAnimated:NO completion:nil];
+            }
+        } else {
+            [self.navigationController popViewControllerAnimated:NO];
+        }
+    } else if(self.presentingViewController) {
         [self dismissViewControllerAnimated:NO completion:nil];
     }
 }
+/**隐藏导航栏左侧按钮*/
 - (void)hideDefaultBackNavi{
     self.navigationItem.leftBarButtonItem = nil;
     self.navigationItem.hidesBackButton = YES;
 }
+/// 隐藏导航栏右侧按钮
 - (void)hideRightNaviButton{
     self.navigationItem.rightBarButtonItem = nil;
 }
-#pragma mark ====== 子类需要重写方法 ======
-- (void)setNavi{}
-- (void)setUI{}
-- (void)setData{}
+
 
 - (void)setTableStyle:(UITableViewStyle)tableStyle{
     _tableStyle = tableStyle;

@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIViewController (ZhNavigation)
 
+/// 导航栏透明度
+@property (nonatomic, copy) NSString* zh_naviAlpha;
+
 #pragma mark ====== find ======
 /// 从导航控制器栈中查找ViewController，没有时返回nil
 - (UIViewController *)zh_findViewController:(NSString *)className;

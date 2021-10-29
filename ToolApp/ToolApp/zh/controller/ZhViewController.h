@@ -61,13 +61,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIFont *naviTitleFont;
 /// 导航栏左右按钮颜色
 @property (nonatomic, strong) UIColor *naviItemColor;
+/// 导航栏透明度
+@property (nonatomic, assign) float naviAlpha;
+/// 是否隐藏导航栏
+@property (nonatomic, assign) BOOL naviBarHidden;
 
 /// 更新导航栏黑色显示风格
 - (void)updateStatusBarStyleDark:(BOOL)isDark;
 /// 是否隐藏状态栏
 - (void)updateStatusBarHidden:(BOOL)hidden;
-/// 是否隐藏导航栏
-- (void)updateNaviBarHidden:(BOOL)hidden;
 
 
 /// 手动隐藏emptyView
@@ -87,15 +89,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// 显示emptyFooterView
 - (void)zh_showFooterEmptyView:(ZhEmptyLoadState)state;
 
-
+#pragma mark ====== 导航按钮管理 ======
 /**设置默认黑色返回箭头*/
 - (UIButton *)showDefaultBackNaviWithAction;
 /**设置白色返回箭头*/
 - (UIButton *)showWhiteBackNaviWithAction;
-/**自定义黑色按钮返回事件*/
-- (UIButton *)showDefaultBackNaviWithAction:(SEL)action;
-/**自定义白色按钮返回事件*/
-- (UIButton *)showWhiteBackNaviWithAction:(SEL)action;
+/// 自定义返回按钮事件
+@property (nonatomic, copy) void(^onClickLeftButton)(void);
 
 /**自定义返回按钮图片和事件*/
 - (UIButton *)setLeftNavWithImage:(NSString *)image target:(id)target action:(SEL)action;
@@ -121,7 +121,6 @@ typedef void (^NaviEventBlock)(NSInteger index);
 - (void)hideDefaultBackNavi;
 /// 隐藏导航栏右侧按钮
 - (void)hideRightNaviButton;
-
 
 #pragma mark ====== 子类需要重写方法 ======
 /// 设置导航栏

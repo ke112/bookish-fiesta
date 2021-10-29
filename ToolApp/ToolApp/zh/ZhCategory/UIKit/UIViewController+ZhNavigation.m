@@ -7,8 +7,54 @@
 //
 
 #import "UIViewController+ZhNavigation.h"
+#import <objc/runtime.h>
+
+static char *naviAlphaKey = @"naviAlphaKey";
 
 @implementation UIViewController (ZhNavigation)
+
++ (void)load {
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        Class class = [self class];
+        //替换方法
+        SEL originalSelector = @selector(presentViewController:animated:completion:);
+        SEL swizzledSelector = @selector(zh_presentViewController:animated:completion:);
+
+        Method originalMethod = class_getInstanceMethod(class, originalSelector);
+        Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);;
+        BOOL didAddMethod =
+        class_addMethod(class,
+                        originalSelector,
+                        method_getImplementation(swizzledMethod),
+                        method_getTypeEncoding(swizzledMethod));
+
+        if (didAddMethod) {
+            class_replaceMethod(class,
+                                swizzledSelector,
+                                method_getImplementation(originalMethod),
+                                method_getTypeEncoding(originalMethod));
+
+        } else {
+            method_exchangeImplementations(originalMethod, swizzledMethod);
+        }
+    });
+}
+
+- (void)zh_presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion {
+    //设置默认的present模式为全屏
+    viewControllerToPresent.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self zh_presentViewController:viewControllerToPresent animated:flag completion:completion];
+}
+
+- (void)setZh_naviAlpha:(NSString *)zh_naviAlpha{
+    objc_setAssociatedObject(self, naviAlphaKey, zh_naviAlpha, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+- (NSString *)zh_naviAlpha{
+    NSString *naviAlpha = objc_getAssociatedObject(self, naviAlphaKey);
+    return naviAlpha ? : @"1";
+}
 
 #pragma mark ====== find ======
 /// 从导航控制器栈中查找ViewController，没有时返回nil
@@ -49,11 +95,12 @@
             break;
         }
         [navArray enumerateObjectsUsingBlock:^(UIViewController *vc, NSUInteger idx, BOOL * _Nonnull stop) {
-            //栈顶1级不能删
-            if ([vc isKindOfClass:NSClassFromString(className)] && idx > 0) {
-                [vcArr removeObject:vc];
-            }else if ([vc isKindOfClass:NSClassFromString(className)] && idx == 0){
-                NSLog(@"Push栈顶控制器不能删,其余根据类名已删除");
+            if (idx == 0) {
+                //栈顶保留
+            } else {
+                if ([vc isKindOfClass:NSClassFromString(className)]) {
+                    [vcArr removeObject:vc];
+                }
             }
         }];
     }
@@ -107,8 +154,12 @@
         }
     }];
     [navArray enumerateObjectsUsingBlock:^(UIViewController *vc, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (idx > index && idx != navArray.count-1) {
-            [vcArr removeObject:vc];
+        if (idx == navArray.count-1) {
+            //栈尾保留
+        }else{
+            if (idx > index) {
+                [vcArr removeObject:vc];
+            }
         }
     }];
     self.navigationController.viewControllers = vcArr;

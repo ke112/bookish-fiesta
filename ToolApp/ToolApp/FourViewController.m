@@ -33,13 +33,18 @@
     
     NSInteger num = arc4random_uniform(19);
     [testBtn setTitle:[NSString stringWithFormat:@"testBtn %ld",num] forState:UIControlStateNormal];
+    
+    UIView *blackV = [[UIView alloc]init];
+    blackV.backgroundColor = UIColor.blackColor;
+    [self.view addSubview:blackV];
+    blackV.frame = CGRectMake(0, kNavAndStatusHight, 100, 100);
 }
 - (void)testClick{
 //    [self.navigationController pushViewController:[OneViewController new] animated:YES];
-    for (UIViewController *vc in self.navigationController.viewControllers) {
-        KKLog(@"开始前vc : %@",vc);
-    }
-    KKLog(@"");
+//    for (UIViewController *vc in self.navigationController.viewControllers) {
+//        KKLog(@"开始前vc : %@",vc);
+//    }
+//    KKLog(@"");
 //#import "ViewController.h"  1  灰
 //#import "OneViewController.h"  2  红
 //#import "TwoViewController.h"  3  绿
@@ -57,9 +62,9 @@
 //    [self zh_pushFromRootToClass:[TwoViewController new] animated:YES];
     [self zh_popToClass:@"OneViewController" animated:YES];
     
-    for (UIViewController *vc in self.navigationController.viewControllers) {
-        KKLog(@"结束了vc : %@",vc);
-    }
+//    for (UIViewController *vc in self.navigationController.viewControllers) {
+//        KKLog(@"结束了vc : %@",vc);
+//    }
 }
 
 @end

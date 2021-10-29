@@ -35,8 +35,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
+    self.view.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {

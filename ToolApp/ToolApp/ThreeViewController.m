@@ -23,7 +23,7 @@
     // Do any additional setup after loading the view.
     self.title = @"4";
     self.backgroundColor = UIColor.blueColor;
-    [self updateNaviBarHidden:YES];
+//    self.naviBarHidden = YES;
     
     UIButton *testBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [testBtn setTitle:@"testBtn" forState:UIControlStateNormal];
@@ -31,6 +31,11 @@
     [testBtn addTarget:self action:@selector(testClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:testBtn];
     testBtn.frame = CGRectMake(100, 200, 60, 20);
+    
+    UIView *blackV = [[UIView alloc]init];
+    blackV.backgroundColor = UIColor.blackColor;
+    [self.view addSubview:blackV];
+    blackV.frame = CGRectMake(0, 0, 100, 100);
 }
 - (void)testClick{
     [self.navigationController pushViewController:[FourViewController new] animated:YES];
