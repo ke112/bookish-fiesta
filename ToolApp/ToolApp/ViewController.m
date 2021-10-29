@@ -20,6 +20,7 @@
 #import "FourViewController.h"
 
 @interface ViewController ()
+@property (nonatomic, copy) NSString *sel;
 
 @end
 
@@ -35,7 +36,7 @@
     
 //    self.title = [NSString stringWithFormat:@"导航栏 %ld",kindex];
     self.title = @"1";
-    self.backgroundColor = UIColor.grayColor;
+    self.backgroundColor = UIColor.whiteColor;
     self.naviBarColor = UIColor.yellowColor;
 //    self.naviTitleColor = UIColor.redColor;
 //    self.naviTitleFont = [UIFont systemFontOfSize:15];
@@ -172,7 +173,21 @@
 //    }else{
 //
 //    }
-    [self.navigationController pushViewController:[OneViewController new] animated:YES];
+//    [self.navigationController pushViewController:[OneViewController new] animated:YES];
+    //@[@"好吃的",@"好玩的",@"好喝的"]
+//    [ZhAlertTool showPickerWithOptions:@[@"好吃的",@"好玩的",@"好喝的"] sectionTitle:@"请挑选吃的" lastSel:_sel select:^(NSInteger selectIndex, NSString * _Nullable selectStr) {
+//        _sel = selectStr;
+//    }];
+//    [ZhAlertTool showAlertWithTitle:@"你错了吗" doneTitle:@"错了" doneClick:^{
+//        NSLog(@"点了确定");
+//    }];
+    
+//    [ZhAlertTool showAlertWithTitle:@"你错了吗" message:nil doneTitle:@"错了" sureBlock:^{
+//        NSLog(@"点了确定");
+//    } cancelTitle:@"没错" cancelBlock:^{
+//        NSLog(@"点了取消");
+//    }];
+    
 }
 
 @end

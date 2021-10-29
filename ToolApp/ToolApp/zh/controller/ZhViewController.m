@@ -105,16 +105,14 @@
 /// 处理网络相关问题
 - (void)handleNetWork{
     if ([UIDevice zh_isAirPlane]) {
-        [ZhAlertTool showAlertWithTitle:@"关闭飞行模式或使用无线局域网来访问数据" message:nil cancel:@"好" sure:@"设置" cancelBlock:^{
-        } sureBlock:^{
+        [ZhAlertTool showAlertWithTitle:@"关闭飞行模式或使用无线局域网来访问数据" message:nil doneTitle:@"设置" sureBlock:^{
             [ZhSystemTool openAppPrivacySettings];
-        }];
+        } cancelTitle:@"好" cancelBlock:nil];
     } else {
         if (![UIDevice zh_isNetwork]) {
-            [ZhAlertTool showAlertWithTitle:@"打开蜂窝数据或使用无线局域网访问数据" message:nil cancel:@"好" sure:@"设置" cancelBlock:^{
-            } sureBlock:^{
+            [ZhAlertTool showAlertWithTitle:@"关闭飞行模式或使用无线局域网来访问数据" message:nil doneTitle:@"设置" sureBlock:^{
                 [ZhSystemTool openAppPrivacySettings];
-            }];
+            } cancelTitle:@"好" cancelBlock:nil];
         }else{
 //            NSLog(@"正常有网");
         }

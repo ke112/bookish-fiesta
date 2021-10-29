@@ -18,32 +18,21 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark ====== AlertView ======
 
 /// 提示标题 自定义确定按钮
-+ (void)showAlertWithTitle:(NSString *)title sure:(nullable NSString *)sure;
++ (void)showAlertWithTitle:(NSString *)title doneTitle:(nullable NSString *)doneTitle doneClick:(nullable void(^)(void))doneClickBlock;
 
 /// 提示标题  内容(可选)  取消文字(可选)   确认文字(可选,有默认)  取消回调(可选)  确认回调
-+ (void)showAlertWithTitle:(NSString *)title message:(nullable NSString *)message cancel:(nullable NSString *)cancel sure:(nullable NSString *)sure cancelBlock:(nullable void(^)(void))cancelBlock sureBlock:(nullable void(^)(void))sureBlock;
-
-
-#pragma mark ====== ActionSheet ======
-
-/// 微信底部弹框选择
-/// @param options 选项
-/// @param cancelStr 取消文字 (可选,有默认)
-/// @param title 标题 (可选)
-/// @param callBack 回调数据
-+ (void)alerWithOptions:(NSArray *)options cancelStr:(nullable NSString *)cancelStr sectionTitle:(nullable NSString *)title select:(SelectBlock)callBack;
++ (void)showAlertWithTitle:(NSString *)title message:(nullable NSString *)message doneTitle:(nullable NSString *)doneTitle sureBlock:(nullable void(^)(void))doneBlock cancelTitle:(nullable NSString *)cancelTitle cancelBlock:(nullable void(^)(void))cancelBlock;
 
 #pragma mark ====== PickerView ======
 
 /// 弹出pickerView单项选择
-+ (void)showPickerWithOptions:(NSArray *)options sectionTitle:(nullable NSString *)title select:(SelectBlock)callBack;
++ (void)showPickerWithOptions:(NSArray *)options sectionTitle:(nullable NSString *)title lastSel:(NSString *)lastSel select:(SelectBlock)callBack;
 
 
 #pragma mark ====== Area ======
 
 /// 弹出选择地址的选择
 + (void)showPickerAreaWithSelect:(SelectStrBlock)callBack;
-
 
 #pragma mark ====== Time ======
 

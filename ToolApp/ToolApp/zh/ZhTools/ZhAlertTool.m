@@ -7,160 +7,115 @@
 //
 
 #import "ZhAlertTool.h"
-#import "UIDevice+ZhExt.h"
-
-#if __has_include(<LEEAlert/LEEAlert.h>)
-#import <LEEAlert/LEEAlert.h>
-#elif __has_include("LEEAlert")
-#import "LEEAlert"
-#endif
-
-#if __has_include(<BRPickerView/BRPickerView.h>)
 #import <BRPickerView/BRPickerView.h>
-#elif __has_include("BRPickerView")
-#import "BRPickerView"
-#endif
-
 
 @implementation ZhAlertTool
 
-
 #pragma mark ====== AlertView ======
 
-+ (void)showAlertWithTitle:(NSString *)title sure:(nullable NSString *)sure{
-    [ZhAlertTool showAlertWithTitle:title message:nil cancel:nil sure:sure cancelBlock:nil sureBlock:nil];
++ (void)showAlertWithTitle:(NSString *)title doneTitle:(nullable NSString *)doneTitle doneClick:(nullable void(^)(void))doneClickBlock{
+    [ZhAlertTool showAlertWithTitle:title message:nil doneTitle:doneTitle sureBlock:doneClickBlock cancelTitle:nil cancelBlock:nil];
 }
-+ (void)showAlertWithTitle:(NSString *)title message:(nullable NSString *)message cancel:(nullable NSString *)cancel sure:(nullable NSString *)sure cancelBlock:(nullable void(^)(void))cancelBlock sureBlock:(nullable void(^)(void))sureBlock{
++ (void)showAlertWithTitle:(NSString *)title message:(nullable NSString *)message doneTitle:(nullable NSString *)doneTitle sureBlock:(nullable void(^)(void))doneBlock cancelTitle:(nullable NSString *)cancelTitle cancelBlock:(nullable void(^)(void))cancelBlock{
 
-//    LEEAlertConfig *leeAlertConfig = [LEEAlert alert];
-//    LEEBaseConfigModel *config = leeAlertConfig.config;
-//    config.LeeAddTitle(^(UILabel * _Nonnull label) {
-//        label.text = title;
-//        label.font = [UIFont systemFontOfSize:15.0f weight:UIFontWeightBold];
-//        label.textColor = [UIColor zh_colorWithHexString:BlackHighColor];
-//    });
-//    if (message) {
-//        config.LeeAddContent(^(UILabel *label) {
-//            label.text = message;
-//            label.textAlignment = NSTextAlignmentCenter;
-//            label.textColor = [UIColor zh_colorWithHexString:BlackLowColor];
-//        });
-//    }
-//    if (cancel) {
-//        config.LeeAddAction(^(LEEAction *action) {
-//            action.type = LEEActionTypeCancel;
-//            action.title = cancel;
-//            action.font = [UIFont systemFontOfSize:15.0f weight:UIFontWeightBold];
-//            action.clickBlock = ^{
-//                if (cancelBlock) {
-//                    cancelBlock();
-//                }
-//            };
-//        });
-//    }
-//    config.LeeAddAction(^(LEEAction *action) {
-//        action.title = sure != nil ? sure:@"确定";
-//        action.font = [UIFont systemFontOfSize:15.0f];
-//        action.clickBlock = ^{
-//            if (sureBlock) {
-//                sureBlock();
-//            }
-//        };
-//    });
-//    config.LeeBackgroundStyleTranslucent(0.4)
-//    .LeeOpenAnimationStyle(LEEAnimationStyleOrientationNone)
-//    .LeeCloseAnimationStyle(LEEAnimationStyleOrientationNone)
-//    .LeeOpenAnimationDuration(0.1)
-//    .LeeCloseAnimationDuration(0.1)
-//    .LeeShow();
-    
     NSMutableArray *button = [NSMutableArray array];
-    if (cancel != nil) {
-        [button addObject:cancel];
-        [button addObject:sure];
+    if (cancelTitle != nil) {
+        [button addObject:cancelTitle];
+        [button addObject:doneTitle];
     } else {
-        [button addObject:sure];
+        [button addObject:doneTitle];
     }
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    
     for (int index = 0; index < button.count; index++) {
-        
         UIAlertAction *action = [UIAlertAction actionWithTitle:button[index] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             if (index == 0) {
                 if (cancelBlock) {
                     cancelBlock();
                 }
             } else {
-                if (sureBlock) {
-                    sureBlock();
+                if (doneBlock) {
+                    doneBlock();
                 }
             }
         }];
-        
         [alertController addAction:action];
     }
-    
-    [[UIDevice zh_currentVc] presentViewController:alertController animated:YES completion:nil];
+    [[UIDevice zh_currentRootVc] presentViewController:alertController animated:YES completion:nil];
 }
 
-#pragma mark ====== ActionSheet ======
-
-+ (void)alerWithOptions:(NSArray *)options cancelStr:(nullable NSString *)cancelStr sectionTitle:(nullable NSString *)title select:(SelectBlock)callBack{
-    
-    LEEActionSheetConfig *actionSheetConfig = [LEEAlert actionsheet];
-    LEEBaseConfigModel *config = actionSheetConfig.config;
-    if (title) {
-        config.LeeContent(title);
+/// 获取设备当前window vc
++ (UIViewController *)zh_currentRootVc{
+    UIViewController *result = nil;
+    UIWindow * window = [self zh_currentkeyWindow];
+    if ([window subviews].count > 0) {
+        UIView *frontView = [[window subviews] objectAtIndex:0];
+        id nextResponder = [frontView nextResponder];
+        if ([nextResponder isKindOfClass:[UIViewController class]]){
+            result = nextResponder;
+        }else{
+            result = window.rootViewController;
+        }
     }
-    for (int i=0; i<options.count; i++) {
-        NSString *item = options[i];
-        config.LeeAddAction(^(LEEAction * _Nonnull action) {
-            action.title = item;
-            action.titleColor = [UIColor blackColor];
-            action.font = [UIFont systemFontOfSize:15.0f];
-            action.height = 50;
-//            action.borderColor = kColorWithHex(0xe5e5e5);
-            action.borderWidth = 0.5;
-            action.clickBlock = ^{
-                if (callBack) {
-                    callBack(i,item);
+    return result;
+}
+/// 获取当前keyWindow
++ (UIWindow *)zh_currentkeyWindow{
+    if (@available(iOS 13.0, *)){
+        for (UIWindowScene* windowScene in [UIApplication sharedApplication].connectedScenes) {
+            if (windowScene.activationState == UISceneActivationStateForegroundActive){
+                for (UIWindow *window in windowScene.windows){
+                    if (window.isKeyWindow){
+                        return window;
+                        break;
+                    }
                 }
-            };
-        });
+            }
+        }
+    }else{
+        return [UIApplication sharedApplication].keyWindow;
     }
-    config.LeeAddAction(^(LEEAction *action) {
-        action.type = LEEActionTypeCancel;
-        action.title = cancelStr != nil ? cancelStr : @"取消";
-        action.font = [UIFont systemFontOfSize:15.0f];
-        action.height = 50;
-        action.titleColor = [UIColor blackColor];
-    });
-    config.LeeActionSheetCancelActionSpaceColor([UIColor colorWithWhite:0.92 alpha:1.0f]) // 设置取消按钮间隔的颜色
-    .LeeActionSheetBottomMargin(0.0f) // 设置底部距离屏幕的边距为0
-    .LeeCornerRadii(CornerRadiiMake(10, 10, 0, 0))   // 指定整体圆角半径
-    .LeeActionSheetHeaderCornerRadii(CornerRadiiZero()) // 指定头部圆角半径
-    .LeeActionSheetCancelActionCornerRadii(CornerRadiiZero()) // 指定取消按钮圆角半径
-    .LeeConfigMaxWidth(^CGFloat(LEEScreenOrientationType type) {
-        // 这是最大宽度为屏幕宽度 (横屏和竖屏)
-        return CGRectGetWidth([[UIScreen mainScreen] bounds]);
-    })
-    .LeeActionSheetBackgroundColor([UIColor whiteColor]) // 通过设置背景颜色来填充底部间隙
-    .LeeShow();
+    return nil;
 }
 
 #pragma mark ====== PickerView ======
 
 /// 弹出pickerView选择器
-+ (void)showPickerWithOptions:(NSArray *)options sectionTitle:(nullable NSString *)title select:(SelectBlock)callBack{
++ (void)showPickerWithOptions:(NSArray *)options sectionTitle:(nullable NSString *)title lastSel:(NSString *)lastSel select:(SelectBlock)callBack{
+//    if (options.count==0) {
+//        return;
+//    }
     BRStringPickerView *stringPickerView = [[BRStringPickerView alloc]init];
+    
     BRPickerStyle *style = [[BRPickerStyle alloc]init];
-//    style.cancelTextColor = kColorWithHex(0x999999);
+    style.titleTextFont = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    style.doneTextFont = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    style.cancelTextFont = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    style.selectRowTextFont = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+    style.pickerTextFont = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
+    
+    if (@available(iOS 13.0, *)) {
+        style.titleTextColor = UIColor.secondaryLabelColor;
+        style.doneTextColor = UIColor.labelColor;
+        style.cancelTextColor = UIColor.labelColor;
+        style.selectRowTextColor = UIColor.labelColor;
+        style.pickerTextColor = UIColor.secondaryLabelColor;
+    }else{
+        style.titleTextColor = UIColor.grayColor;
+        style.doneTextColor = UIColor.blackColor;
+        style.cancelTextColor = UIColor.blackColor;
+        style.selectRowTextColor = UIColor.blackColor;
+        style.pickerTextColor = UIColor.grayColor;
+    }
+    
     stringPickerView.pickerStyle = style;
     stringPickerView.pickerMode = BRStringPickerComponentSingle;
     if (title) {
         stringPickerView.title = title;
     }
     stringPickerView.dataSourceArr = options;
+    if (lastSel) {
+        stringPickerView.selectValue = lastSel;
+    }
     stringPickerView.resultModelBlock = ^(BRResultModel *resultModel) {
         if (callBack) {
             callBack(resultModel.index,resultModel.value);
@@ -170,7 +125,6 @@
 }
 
 #pragma mark ====== Area ======
-
 /// 弹出选择地址的选择
 + (void)showPickerAreaWithSelect:(SelectStrBlock)callBack{
     BRAddressPickerView *addressPickerView = [[BRAddressPickerView alloc]init];
@@ -218,7 +172,7 @@
 + (void)showDateTimeByFormatter:(BRDatePickerMode)mode lastDate:(nullable NSString *)lastDate call:(SelectStrBlock)callBack{
     BRDatePickerView *datePickerView = [[BRDatePickerView alloc]init];
     datePickerView.pickerMode = mode;
-    datePickerView.title = @"请选择时间";
+    datePickerView.title = @"选择日期";
     if (lastDate) {
         datePickerView.selectValue = lastDate;
     }
@@ -235,7 +189,6 @@
     yearLabel.textAlignment = NSTextAlignmentCenter;
     yearLabel.textColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.2f];
     yearLabel.font = [UIFont boldSystemFontOfSize:100.0f];
-    
     
     NSString *yearString = @([NSDate date].br_year).stringValue;
     yearLabel.text = yearString;
