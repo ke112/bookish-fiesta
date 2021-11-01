@@ -7,6 +7,7 @@
 //
 
 #import "ZhViewController.h"
+#import <objc/runtime.h>
 #import "UIDevice+ZhExt.h"
 #import "UIBarButtonItem+ZhNavigationBar.h"
 #import "ZhAlertTool.h"
@@ -24,6 +25,8 @@
 #import "MJRefresh.h"
 #endif
 
+static char *naviAlphaKey = @"naviAlphaKey";
+
 @interface ZhViewController ()
 /// (内部使用)子类vc是否有分页请求
 @property (nonatomic, assign) BOOL isHaveGetPageVc;
@@ -34,6 +37,8 @@
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 /// (内部使用)状态栏隐藏
 @property (nonatomic, assign) BOOL statusBarHidden;
+///// (内部使用)导航栏透明度
+@property (nonatomic, copy) NSString *rt_naviAlpha;
 
 @end
 
@@ -60,9 +65,12 @@
     
     [self configNaviBar];
     
-    NSString *naviAlpha = self.zh_naviAlpha;
+    NSString *naviAlpha = self.rt_naviAlpha;
     if (self.navigationController.navigationBar.alpha != naviAlpha.floatValue) {
         self.navigationController.navigationBar.alpha = naviAlpha.floatValue;
+        NSLog(@"导航栏透明度变了 %@ %@",naviAlpha,self);
+    }else{
+        NSLog(@"导航栏透明度没变 %@",self);
     }
 }
 -(void)viewDidAppear:(BOOL)animated {
@@ -84,7 +92,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
-    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.navigationBar.translucent = NO;
     self.backgroundColor = kDefaultBackgrouncColor;
     self.tableStyle = UITableViewStyleGrouped;
     self.pageNum = 1;
@@ -210,6 +218,13 @@
     self.footerEmptyView.state = state;
 }
 #pragma mark ====== 导航栏状态栏管理 ======
+- (void)setRt_naviAlpha:(NSString *)rt_naviAlpha{
+    objc_setAssociatedObject(self, naviAlphaKey, rt_naviAlpha, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+- (NSString *)rt_naviAlpha{
+    NSString *naviAlpha = objc_getAssociatedObject(self, naviAlphaKey);
+    return naviAlpha ? : @"1";
+}
 /// 背景色
 - (void)setBackgroundColor:(UIColor *)backgroundColor{
     _backgroundColor = backgroundColor;
@@ -238,8 +253,10 @@
     [self configNaviBar];
 }
 /// 更新导航栏黑色显示风格
-- (void)updateStatusBarStyleDark:(BOOL)isDark{
-    if (isDark) {
+/// 更新导航栏白色色显示风格
+- (void)updateStatusBarStyleWhite:(BOOL)isWhite{
+    self.statusBarWhite = isWhite;
+    if (isWhite == NO) {
         [self showDefaultBackNaviWithAction];
         if (@available(iOS 13.0, *)) {
             self.naviTitleColor = UIColor.labelColor;
@@ -248,7 +265,6 @@
             self.naviTitleColor = UIColor.blackColor;
             self.naviItemColor = UIColor.blackColor;
         }
-        _statusBarStyle = UIStatusBarStyleDefault;
     }else{
         [self showWhiteBackNaviWithAction];
         if (@available(iOS 13.0, *)) {
@@ -258,9 +274,16 @@
             self.naviTitleColor = UIColor.whiteColor;
             self.naviItemColor = UIColor.whiteColor;
         }
-        _statusBarStyle = UIStatusBarStyleLightContent;
     }
     [self configNaviBar];
+}
+/// 是否状态栏白色显示风格
+- (void)setStatusBarWhite:(BOOL)statusBarWhite{
+    if (statusBarWhite) {
+        _statusBarStyle = UIStatusBarStyleLightContent;
+    } else {
+        _statusBarStyle = UIStatusBarStyleDefault;
+    }
     [self setNeedsStatusBarAppearanceUpdate];
 }
 /// 是否隐藏状态栏
@@ -269,17 +292,20 @@
     [self setNeedsStatusBarAppearanceUpdate];
 }
 /// 导航栏透明度
-- (void)setNaviAlpha:(float)naviAlpha{
-    _naviAlpha = naviAlpha;
-    self.zh_naviAlpha = [NSString stringWithFormat:@"%f",naviAlpha];
+- (void)setNaviBarAlpha:(float)naviBarAlpha{
+    _naviBarAlpha = naviBarAlpha;
+    self.rt_naviAlpha = [NSString stringWithFormat:@"%f",naviBarAlpha];
+    if (naviBarAlpha == 0) {
+        self.naviBarColor = UIColor.clearColor;
+    }
 }
 /// 是否隐藏导航栏
 - (void)setNaviBarHidden:(BOOL)naviBarHidden{
     _naviBarHidden = naviBarHidden;
     if (naviBarHidden) {
-        self.naviAlpha = 0;
+        self.naviBarAlpha = 0;
     }else{
-        self.naviAlpha = 1;
+        self.naviBarAlpha = 1;
     }
 }
 /// 统一设置

@@ -18,25 +18,21 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    self.contentView.backgroundColor = kDefaultBackgrouncColor;
+    [self setUITableViewConfig];
     [self setUI];
 }
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     if (self == [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.contentView.backgroundColor = kDefaultBackgrouncColor;
+        [self setUITableViewConfig];
         [self setUI];
     }
     return self;
 }
-///子类去重写
-- (void)setUI{
-    
+- (void)setUITableViewConfig{
+    self.contentView.backgroundColor = kDefaultBackgrouncColor;
 }
-///子类去重写
-- (void)clearClick{
-    
-}
+
 ///添加顶部分割线(常用)
 - (void)addTopLine{
     [self.contentView addSubview:self.topLineView];
@@ -58,7 +54,6 @@
     [self.topLineView removeFromSuperview];
     [self.bottomLineView removeFromSuperview];
 }
-
 
 ///添加右侧箭头
 - (void)addRightArrow{
@@ -103,14 +98,6 @@
         _arrowRightImg.image = [UIImage imageNamed:@"rightArrow8*14"];
     }
     return _arrowRightImg;
-}
-- (UIButton *)clearBtn{
-    if (_clearBtn == nil) {
-        _clearBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _clearBtn.backgroundColor = [UIColor clearColor];
-        [_clearBtn addTarget:self action:@selector(clearClick) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _clearBtn;
 }
 - (UIImageView *)iconImg{
     if (_iconImg == nil) {

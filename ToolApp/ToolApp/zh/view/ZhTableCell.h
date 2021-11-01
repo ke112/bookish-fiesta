@@ -16,8 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///子类去重写
 - (void)setUI;
-///子类去重写
-- (void)clearClick;
 
 ///添加顶部分割线(常用)
 - (void)addTopLine;
@@ -47,19 +45,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel *contentLb;
 
 ///.h设置行数,重写setter方法
-@property (nonatomic, assign) NSIndexPath *index;
+@property (nonatomic, assign) NSIndexPath *indexPath;
 ///.m使用行数,上边属性setter方法内赋值,其他地方使用
-@property (nonatomic, assign) NSIndexPath *innerIndex;
+@property (nonatomic, assign) NSIndexPath *innerIndexPath;
 ///右侧箭头视图
 @property (nonatomic, strong) UIImageView *arrowRightImg;
-
-///透明的按钮(添加虚拟点击使用)
-@property (nonatomic, strong) UIButton *clearBtn;
-/// 透明按钮回调
-@property (nonatomic, copy) void(^clearClickBlock)(void);
-
-/// 更新cell的约束布局
-@property (nonatomic, copy) void (^updateCellLayoutBlock)(void);
 
 
 @end

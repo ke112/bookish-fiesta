@@ -173,7 +173,7 @@
 //    }else{
 //
 //    }
-//    [self.navigationController pushViewController:[OneViewController new] animated:YES];
+    [self.navigationController pushViewController:[OneViewController new] animated:YES];
     //@[@"好吃的",@"好玩的",@"好喝的"]
 //    [ZhAlertTool showPickerWithOptions:@[@"好吃的",@"好玩的",@"好喝的"] sectionTitle:@"请挑选吃的" lastSel:_sel select:^(NSInteger selectIndex, NSString * _Nullable selectStr) {
 //        _sel = selectStr;

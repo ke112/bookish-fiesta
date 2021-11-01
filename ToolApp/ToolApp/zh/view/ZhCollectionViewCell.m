@@ -13,7 +13,7 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    self.contentView.backgroundColor = kDefaultBackgrouncColor;
+    [self setCollectionConfig];
     [self setUI];
 }
 
@@ -21,15 +21,14 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.contentView.backgroundColor = kDefaultBackgrouncColor;
+        [self setCollectionConfig];
         [self setUI];
     }
     return self;
 }
 
-///子类去重写
-- (void)setUI{
-    
+- (void)setCollectionConfig{
+    self.contentView.backgroundColor = kDefaultBackgrouncColor;
 }
 
 @end

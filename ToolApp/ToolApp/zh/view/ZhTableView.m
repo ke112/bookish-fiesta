@@ -60,16 +60,16 @@
 - (UIView *)defaultHeaderView{
     if (_defaultHeaderView == nil) {
         _defaultHeaderView = [[UIView alloc]init];
-        _defaultHeaderView.frame = CGRectMake(0, 0, kScreenWidth, minValue);
-        _defaultHeaderView.backgroundColor = kDefaultBackgrouncColor;
+        _defaultHeaderView.frame = CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, minValue);
+        _defaultHeaderView.backgroundColor = UIColor.whiteColor;
     }
     return _defaultHeaderView;
 }
 - (UIView *)defaultFooterView{
     if (_defaultFooterView == nil) {
         _defaultFooterView = [[UIView alloc]init];
-        _defaultFooterView.frame = CGRectMake(0, 0, kScreenWidth, minValue);
-        _defaultFooterView.backgroundColor = kDefaultBackgrouncColor;
+        _defaultFooterView.frame = CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, minValue);
+        _defaultFooterView.backgroundColor = UIColor.whiteColor;
     }
     return _defaultFooterView;
 }

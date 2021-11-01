@@ -28,7 +28,7 @@
     self.title = @"3";
     self.backgroundColor = UIColor.greenColor;
     self.naviBarColor = UIColor.systemPinkColor;
-    [self updateStatusBarStyleDark:NO];
+    [self updateStatusBarStyleWhite:YES];
 //    [self updateStatusBarHidden:YES];
     self.naviBarHidden = YES;
     

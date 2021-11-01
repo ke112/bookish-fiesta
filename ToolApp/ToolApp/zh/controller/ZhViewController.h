@@ -62,12 +62,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// 导航栏左右按钮颜色
 @property (nonatomic, strong) UIColor *naviItemColor;
 /// 导航栏透明度
-@property (nonatomic, assign) float naviAlpha;
+@property (nonatomic, assign) float naviBarAlpha;
 /// 是否隐藏导航栏
 @property (nonatomic, assign) BOOL naviBarHidden;
+/// 是否状态栏白色显示风格
+@property (nonatomic, assign) BOOL statusBarWhite;
 
-/// 更新导航栏黑色显示风格
-- (void)updateStatusBarStyleDark:(BOOL)isDark;
+/// 更新导航栏白色色显示风格
+- (void)updateStatusBarStyleWhite:(BOOL)isWhite;
 /// 是否隐藏状态栏
 - (void)updateStatusBarHidden:(BOOL)hidden;
 

@@ -27,8 +27,8 @@
     self.title = @"2";
     self.backgroundColor = UIColor.redColor;
     self.naviBarColor = UIColor.blueColor;
-    [self updateStatusBarStyleDark:NO];
-    self.naviBarHidden = YES;
+    [self updateStatusBarStyleWhite:YES];
+//    self.naviBarHidden = YES;
     
     UIButton *testBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [testBtn setTitle:@"testBtn" forState:UIControlStateNormal];

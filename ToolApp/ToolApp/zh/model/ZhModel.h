@@ -14,7 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ZhModel : NSObject
 
 
-
 @end
 
 NS_ASSUME_NONNULL_END

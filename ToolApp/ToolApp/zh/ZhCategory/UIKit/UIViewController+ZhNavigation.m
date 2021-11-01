@@ -48,14 +48,6 @@ static char *naviAlphaKey = @"naviAlphaKey";
     [self zh_presentViewController:viewControllerToPresent animated:flag completion:completion];
 }
 
-- (void)setZh_naviAlpha:(NSString *)zh_naviAlpha{
-    objc_setAssociatedObject(self, naviAlphaKey, zh_naviAlpha, OBJC_ASSOCIATION_COPY_NONATOMIC);
-}
-- (NSString *)zh_naviAlpha{
-    NSString *naviAlpha = objc_getAssociatedObject(self, naviAlphaKey);
-    return naviAlpha ? : @"1";
-}
-
 #pragma mark ====== find ======
 /// 从导航控制器栈中查找ViewController，没有时返回nil
 - (UIViewController *)zh_findViewController:(NSString *)className {
@@ -73,17 +65,16 @@ static char *naviAlphaKey = @"naviAlphaKey";
 /// viewController是否是push方式显示的,反之为present
 - (BOOL)zh_PushedShow {
     NSArray *viewcontrollers = self.navigationController.viewControllers;
-    ZHDisplaMode displaMode = zh_DisplaModePush;
     if (viewcontrollers.count > 1) {
         if ([viewcontrollers objectAtIndex:viewcontrollers.count - 1] == self) {
             //push方式
-            displaMode = zh_DisplaModePush;
+            return YES;
         }
     }else {
         //present方式
-        displaMode = zh_DisplaModePresent;
+        return NO;
     }
-    return displaMode == zh_DisplaModePush;
+    return YES;
 }
 
 /// 删除指定的视图控制器
