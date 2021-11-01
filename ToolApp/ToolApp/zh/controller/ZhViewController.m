@@ -68,9 +68,6 @@ static char *naviAlphaKey = @"naviAlphaKey";
     NSString *naviAlpha = self.rt_naviAlpha;
     if (self.navigationController.navigationBar.alpha != naviAlpha.floatValue) {
         self.navigationController.navigationBar.alpha = naviAlpha.floatValue;
-        NSLog(@"导航栏透明度变了 %@ %@",naviAlpha,self);
-    }else{
-        NSLog(@"导航栏透明度没变 %@",self);
     }
 }
 -(void)viewDidAppear:(BOOL)animated {
