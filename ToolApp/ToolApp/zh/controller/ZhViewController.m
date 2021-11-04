@@ -346,10 +346,24 @@ static char *naviAlphaKey = @"naviAlphaKey";
 
 #pragma mark ====== 导航按钮管理 ======
 - (UIButton *)showDefaultBackNaviWithAction{
-    return [self setLeftNavWithImage:@"back_style1_black" target:self action:@selector(backEvent)];
+    return [self showCustomBackNaviWithAction:nil];
 }
 - (UIButton *)showWhiteBackNaviWithAction{
-    return [self setLeftNavWithImage:@"back_style1_white" target:self action:@selector(backEvent)];
+    return [self showWhiteBackNaviWithAction:nil];
+}
+/**设置默认黑色返回箭头*/
+- (UIButton *)showCustomBackNaviWithAction:(void(^)())block{
+    if (self.leftEventBlock) {
+        self.leftEventBlock(0);
+    }
+    return [self setLeftNavWithImage:@"back_style1_black" target:self action:@selector(defaultBackEvent)];
+}
+/**设置白色返回箭头*/
+- (UIButton *)showWhiteBackNaviWithAction:(void(^)())block{
+    if (self.leftEventBlock) {
+        self.leftEventBlock(0);
+    }
+    return [self setLeftNavWithImage:@"back_style1_white" target:self action:@selector(defaultBackEvent)];
 }
 
 - (UIButton *)setLeftNavWithImage:(NSString *)image target:(id)target action:(SEL)action{
@@ -420,22 +434,25 @@ static char *naviAlphaKey = @"naviAlphaKey";
 }
 
 #pragma mark - 返回点击事件
-- (void)backEvent{
+- (void)defaultBackEvent{
     [self.view endEditing:YES];
-    if (self.onClickLeftButton) {
-        self.onClickLeftButton();
+    if (self.leftEventBlock) {
+        self.leftEventBlock(0);
     }else{
-        if (self.navigationController) {
-            if (self.navigationController.viewControllers.count == 1) {
-                if (self.presentingViewController) {
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                }
-            } else {
-                [self.navigationController popViewControllerAnimated:YES];
+        [self backEvent];
+    }
+}
+- (void)backEvent{
+    if (self.navigationController) {
+        if (self.navigationController.viewControllers.count == 1) {
+            if (self.presentingViewController) {
+                [self dismissViewControllerAnimated:YES completion:nil];
             }
-        } else if(self.presentingViewController) {
-            [self dismissViewControllerAnimated:YES completion:nil];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];
         }
+    } else if(self.presentingViewController) {
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 /**基类返回按钮方法  没有动画效果*/

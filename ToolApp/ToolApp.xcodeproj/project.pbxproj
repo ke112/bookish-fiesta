@@ -21,7 +21,13 @@
 		296E7ECF26A6B6D6008ACAE7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 296E7ECE26A6B6D6008ACAE7 /* main.m */; };
 		296E7EE026A6E155008ACAE7 /* ZHLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 296E7EDD26A6E155008ACAE7 /* ZHLocation.m */; };
 		296E7EE126A6E155008ACAE7 /* ZHVersionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 296E7EDF26A6E155008ACAE7 /* ZHVersionManager.m */; };
+		2986932127313DD7001BBDF9 /* 1102.js in Resources */ = {isa = PBXBuildFile; fileRef = 2986932027313DD7001BBDF9 /* 1102.js */; };
+		29878ACA272FDDFE00957490 /* SuperWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29878AC8272FDDFD00957490 /* SuperWebView.m */; };
+		29878ACD272FDE7D00957490 /* ZhWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29878ACC272FDE7D00957490 /* ZhWebViewController.m */; };
 		29A79E3E26A870C80006FE59 /* JZLocationConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A79E3D26A870C80006FE59 /* JZLocationConverter.m */; };
+		29ABC68827338EEC00C22B08 /* JSPatchPlatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29ABC68727338EEC00C22B08 /* JSPatchPlatform.framework */; };
+		29ABC68A27338F1D00C22B08 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 29ABC68927338F1D00C22B08 /* libz.tbd */; };
+		29ABC68C27338F2C00C22B08 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29ABC68B27338F2B00C22B08 /* JavaScriptCore.framework */; };
 		29C8440426A908B000912E87 /* UIImageView+ZhExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C843C526A908B000912E87 /* UIImageView+ZhExt.m */; };
 		29C8440526A908B000912E87 /* UIDevice+ZhExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C843C626A908B000912E87 /* UIDevice+ZhExt.m */; };
 		29C8440726A908B000912E87 /* UIView+ZhExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C843C926A908B000912E87 /* UIView+ZhExt.m */; };
@@ -103,8 +109,16 @@
 		296E7EDD26A6E155008ACAE7 /* ZHLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZHLocation.m; sourceTree = "<group>"; };
 		296E7EDE26A6E155008ACAE7 /* ZHLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZHLocation.h; sourceTree = "<group>"; };
 		296E7EDF26A6E155008ACAE7 /* ZHVersionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZHVersionManager.m; sourceTree = "<group>"; };
+		2986932027313DD7001BBDF9 /* 1102.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = 1102.js; sourceTree = "<group>"; };
+		29878AC8272FDDFD00957490 /* SuperWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuperWebView.m; sourceTree = "<group>"; };
+		29878AC9272FDDFE00957490 /* SuperWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperWebView.h; sourceTree = "<group>"; };
+		29878ACB272FDE7D00957490 /* ZhWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZhWebViewController.h; sourceTree = "<group>"; };
+		29878ACC272FDE7D00957490 /* ZhWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZhWebViewController.m; sourceTree = "<group>"; };
 		29A79E3C26A870C80006FE59 /* JZLocationConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JZLocationConverter.h; sourceTree = "<group>"; };
 		29A79E3D26A870C80006FE59 /* JZLocationConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JZLocationConverter.m; sourceTree = "<group>"; };
+		29ABC68727338EEC00C22B08 /* JSPatchPlatform.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JSPatchPlatform.framework; sourceTree = "<group>"; };
+		29ABC68927338F1D00C22B08 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		29ABC68B27338F2B00C22B08 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		29C843C226A908B000912E87 /* NSString+ZhExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ZhExt.h"; sourceTree = "<group>"; };
 		29C843C326A908B000912E87 /* UIImage+ZhExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ZhExt.h"; sourceTree = "<group>"; };
 		29C843C526A908B000912E87 /* UIImageView+ZhExt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ZhExt.m"; sourceTree = "<group>"; };
@@ -210,7 +224,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29ABC68C27338F2C00C22B08 /* JavaScriptCore.framework in Frameworks */,
+				29ABC68A27338F1D00C22B08 /* libz.tbd in Frameworks */,
 				B297EA802FC687422E0C72FD /* Pods_ToolApp.framework in Frameworks */,
+				29ABC68827338EEC00C22B08 /* JSPatchPlatform.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +273,8 @@
 			isa = PBXGroup;
 			children = (
 				29D1823F26A828C80041724D /* 模拟点.gpx */,
+				29ABC68727338EEC00C22B08 /* JSPatchPlatform.framework */,
+				2986932027313DD7001BBDF9 /* 1102.js */,
 				296E7EBC26A6B6D3008ACAE7 /* AppDelegate.h */,
 				296E7EBD26A6B6D3008ACAE7 /* AppDelegate.m */,
 				296E7EC226A6B6D3008ACAE7 /* ViewController.h */,
@@ -351,6 +370,8 @@
 				29C843F226A908B000912E87 /* ZhViewController.m */,
 				29332812272A916B0099B3F9 /* ZhNavigationController.h */,
 				29332813272A916B0099B3F9 /* ZhNavigationController.m */,
+				29878ACB272FDE7D00957490 /* ZhWebViewController.h */,
+				29878ACC272FDE7D00957490 /* ZhWebViewController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -379,6 +400,8 @@
 				29C8440126A908B000912E87 /* ZhTableCell.m */,
 				29C843F826A908B000912E87 /* ZhTableView.h */,
 				29C8440026A908B000912E87 /* ZhTableView.m */,
+				29878AC9272FDDFE00957490 /* SuperWebView.h */,
+				29878AC8272FDDFD00957490 /* SuperWebView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -490,6 +513,8 @@
 		2BD4AEA22A291DAF5A3385F8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				29ABC68B27338F2B00C22B08 /* JavaScriptCore.framework */,
+				29ABC68927338F1D00C22B08 /* libz.tbd */,
 				747E33DF66A1E2D87005E478 /* Pods_ToolApp.framework */,
 			);
 			name = Frameworks;
@@ -565,6 +590,7 @@
 			files = (
 				29D1824026A828C80041724D /* 模拟点.gpx in Resources */,
 				296E7ECC26A6B6D6008ACAE7 /* LaunchScreen.storyboard in Resources */,
+				2986932127313DD7001BBDF9 /* 1102.js in Resources */,
 				296E7EC926A6B6D6008ACAE7 /* Assets.xcassets in Resources */,
 				29C8441526A908B000912E87 /* province.json in Resources */,
 			);
@@ -624,6 +650,7 @@
 				29C8440D26A908B000912E87 /* UIImage+ZhExt.m in Sources */,
 				29C8441F26A908B000912E87 /* ZhScrollView.m in Sources */,
 				29C8442A26A9098800912E87 /* UITextField+ZhInputLimit.m in Sources */,
+				29878ACA272FDDFE00957490 /* SuperWebView.m in Sources */,
 				29C8442426A908F100912E87 /* ZhTimerManage.m in Sources */,
 				29C8441926A908B000912E87 /* UIView+ZhDrawCategory.m in Sources */,
 				295A6D382728032B00A943FC /* ThreeViewController.m in Sources */,
@@ -656,6 +683,7 @@
 				29C8443E26A916A800912E87 /* ResultModel.m in Sources */,
 				29C8443326A90A0900912E87 /* UIButton+ZhSubmitting.m in Sources */,
 				29C8443D26A916A800912E87 /* NetWorkTool.m in Sources */,
+				29878ACD272FDE7D00957490 /* ZhWebViewController.m in Sources */,
 				29C8441E26A908B000912E87 /* ZhCollectionView.m in Sources */,
 				29D1823C26A801630041724D /* NSObject+DebugDescription.m in Sources */,
 				29C8440726A908B000912E87 /* UIView+ZhExt.m in Sources */,
@@ -817,6 +845,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 47UJ7TQKNK;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ToolApp",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ToolApp/ToolAppPrefixHeader.h";
 				INFOPLIST_FILE = ToolApp/Info.plist;
@@ -846,6 +878,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 47UJ7TQKNK;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ToolApp",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ToolApp/ToolAppPrefixHeader.h";
 				INFOPLIST_FILE = ToolApp/Info.plist;

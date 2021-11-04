@@ -33,11 +33,11 @@ static AFHTTPSessionManager *_sessionManager;
     /*    设置请求头    */
     [_sessionManager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"platform"];
     [_sessionManager.requestSerializer setValue:[UIDevice zh_appVersion] forHTTPHeaderField:@"version"];
-    [_sessionManager.requestSerializer setValue:[UIDevice zh_phoneSystemVersion] forHTTPHeaderField:@"sysVersion"];
+    [_sessionManager.requestSerializer setValue:[UIDevice zh_deviceSystemVersion] forHTTPHeaderField:@"sysVersion"];
     [_sessionManager.requestSerializer setValue:@"SRXL" forHTTPHeaderField:@"channel"];
-    [_sessionManager.requestSerializer setValue:[UIDevice zh_phoneModel] forHTTPHeaderField:@"deviceInfo"];
+    [_sessionManager.requestSerializer setValue:[UIDevice zh_deviceModel] forHTTPHeaderField:@"deviceInfo"];
     [_sessionManager.requestSerializer setValue:@"c" forHTTPHeaderField:@"userTag"];
-    [_sessionManager.requestSerializer setValue:[UIDevice zh_phoneDefaultLanguage] forHTTPHeaderField:@"language"];
+    [_sessionManager.requestSerializer setValue:[UIDevice zh_deviceDefaultLanguage] forHTTPHeaderField:@"language"];
 }
 
 

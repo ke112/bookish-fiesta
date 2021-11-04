@@ -33,9 +33,6 @@
     return self;
 }
 
-- (void)setUI{
-    
-}
 -(void)addGesture{
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapGesture:)];
     [self addGestureRecognizer:tapGesture];
@@ -55,20 +52,6 @@
     _bgColor = bgColor;
     self.backgroundColor = bgColor;
     self.contentView.backgroundColor = bgColor;
-}
-
-/// 创建一个间隔视图
-- (UIView *)makeMarginView{
-    UIView *marginView = [[UIView alloc]init];
-    marginView.backgroundColor = kColorWithHex(@"0xE5E5E5");
-    return marginView;
-}
-
-/// 显示所有的子视图的背景颜色
-- (void)showSubViewBackgroundColor{
-    for (UIView *subV in self.contentView.subviews) {
-        subV.backgroundColor = kRandomColor;
-    }
 }
 
 - (UIView *)contentView{

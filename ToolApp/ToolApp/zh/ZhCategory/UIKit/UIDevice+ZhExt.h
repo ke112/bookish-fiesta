@@ -32,31 +32,31 @@ typedef void(^ZhDeviceNetworkStatusBlock)(ZhDeviceNetworkStatus status);
 #pragma mark ====== phone的数据 ======
 
 /// UUIDString : 得到当前设备独一标识符 DA6586A1-C0F4-43B9-AAA5-43476A5F3BA6
-+ (NSString *)zh_phoneUUID;
++ (NSString *)zh_deviceUUID;
 
-/// phoneName : 当前的手机名称，关于本机里面的名称
-+ (NSString *)zh_phoneName;
+/// phoneName : 当前的设备名称，关于本机里面的名称
++ (NSString *)zh_deviceName;
 
-/// phoneModel : 模型 e.g. @"iPhone", @"iPod touch"
-+ (NSString *)zh_phoneModel;
+/// phoneModel : 当前的设备型号
++ (NSString *)zh_deviceModel;
 
 /// localizedModel : 模型的本地化版本
-+ (NSString *)zh_phoneLocalizedModel;
++ (NSString *)zh_deviceLocalizedModel;
 
 /// systemVersion : 14.4
-+ (NSString *)zh_phoneSystemVersion;
++ (NSString *)zh_deviceSystemVersion;
 
 /// systemName : 当前系统名称
-+ (NSString *)zh_phoneSystemName;
++ (NSString *)zh_deviceSystemName;
 
 /// batteryState : 充电的状态 0未知  1没有插电源  2插了电源不到100%  3插了电源充电100%
-+ (UIDeviceBatteryState)zh_phoneBatteryState;
++ (UIDeviceBatteryState)zh_deviceBatteryState;
 
 /// batteryLevel : 当前电池量 0~1
-+ (float)zh_phoneBatteryLevel;
++ (float)zh_deviceBatteryLevel;
 
 /// language : 获取默认系统语言 zh-Hans
-+ (NSString *)zh_phoneDefaultLanguage;
++ (NSString *)zh_deviceDefaultLanguage;
 
 #pragma mark ====== app的数据 ======
 

@@ -96,8 +96,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIButton *)showDefaultBackNaviWithAction;
 /**设置白色返回箭头*/
 - (UIButton *)showWhiteBackNaviWithAction;
-/// 自定义返回按钮事件
-@property (nonatomic, copy) void(^onClickLeftButton)(void);
+/**设置默认黑色返回箭头*/
+- (UIButton *)showCustomBackNaviWithAction:(void(^)())block;
+/**设置白色返回箭头*/
+- (UIButton *)showWhiteBackNaviWithAction:(void(^)())block;
 
 /**自定义返回按钮图片和事件*/
 - (UIButton *)setLeftNavWithImage:(NSString *)image target:(id)target action:(SEL)action;

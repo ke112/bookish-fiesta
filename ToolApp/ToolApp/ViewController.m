@@ -18,6 +18,7 @@
 #import "ThreeViewController.h"
 #import "TwoViewController.h"
 #import "FourViewController.h"
+#import "ZhWebViewController.h"
 
 @interface ViewController ()
 @property (nonatomic, copy) NSString *sel;
@@ -128,7 +129,11 @@
     NSLog(@"5");
 }
 - (void)testClick2{
-    [ZhLoadingHud showHudWithImage:@"pulish_success" hint:@"发表成功" addedTo:self.view yOffset:0];
+//    [ZhLoadingHud showHudWithImage:@"pulish_success" hint:@"发表成功" addedTo:self.view yOffset:0];
+    ZhWebViewController *web = [[ZhWebViewController alloc]init];
+    web.webUrl = @"https:www.baidu.com/";
+//    [self.navigationController zh_pushOnceClass:web animated:YES];
+    [self.navigationController pushViewController:web animated:YES];
 }
 - (void)testClick3{
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view.window animated:YES];
