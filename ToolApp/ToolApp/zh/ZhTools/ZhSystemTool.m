@@ -87,7 +87,7 @@
                 [productViewController dismissViewControllerAnimated:YES completion:nil];
             }
         }];
-        [[UIDevice zh_currentVc] presentViewController:productViewController animated:YES completion:^{
+        [[UIDevice zh_currentShowVc] presentViewController:productViewController animated:YES completion:^{
             NSLog(@"打开App Store下载页(app内部)   跳转完成");
         }];
     }else{

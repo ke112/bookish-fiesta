@@ -14,6 +14,7 @@
 static char *kBadgeSize = "kBadgeSize";
 static char *kBadgeColor = "kBadgeColor";
 static char *kBadgeImage = "kBadgeImage";
+
 @implementation UITabBar (ZhBadge)
 
 //运行时处理分类属性

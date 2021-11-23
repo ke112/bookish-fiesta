@@ -6,9 +6,11 @@
 //
 
 #import "AppDelegate.h"
+
 #import "ViewController.h"
 #import "ZHHeader.h"
 #import "ZhNavigationController.h"
+
 
 @interface AppDelegate ()
 
@@ -29,7 +31,6 @@
     NSString *script = [NSString stringWithContentsOfFile:sourcePath encoding:NSUTF8StringEncoding error:nil];
    
 
-    
     return YES;
 }
 

@@ -12,18 +12,11 @@
 #import "UIBarButtonItem+ZhNavigationBar.h"
 #import "ZhAlertTool.h"
 #import "ZhSystemTool.h"
+#import "UIViewController+ZhAlert.h"
 
-#if __has_include(<LYEmptyView/LYEmptyViewHeader.h>)
+#import <Reachability/Reachability.h>
 #import <LYEmptyView/LYEmptyViewHeader.h>
-#elif __has_include("LYEmptyViewHeader.h")
-#import "LYEmptyViewHeader.h"
-#endif
-
-#if __has_include(<MJRefresh/MJRefresh.h>)
 #import <MJRefresh/MJRefresh.h>
-#elif __has_include("MJRefresh.h")
-#import "MJRefresh.h"
-#endif
 
 static char *naviAlphaKey = @"naviAlphaKey";
 
@@ -58,6 +51,7 @@ static char *naviAlphaKey = @"naviAlphaKey";
 }
 /// 当前类销毁
 - (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     NSLog(@"\nvc类 %@ 销毁了\n",self);
 }
 - (void)viewWillAppear:(BOOL)animated{
@@ -99,7 +93,7 @@ static char *naviAlphaKey = @"naviAlphaKey";
     } else {
         [self showDefaultBackNaviWithAction];
     }
-//    [self handleNetWork];
+    [self addReachability];
     __weak typeof(self) ws = self;
     self.footerEmptyView.refreshDataBlock = ^(ZhEmptyLoadState state) {
         ws.refreshDataBlock(state);
@@ -107,18 +101,51 @@ static char *naviAlphaKey = @"naviAlphaKey";
 }
 
 #pragma mark ====== 处理网络相关问题 ======
-/// 处理网络相关问题
-- (void)handleNetWork{
-    if ([UIDevice zh_isAirPlane]) {
-        [ZhAlertTool showAlertWithTitle:@"关闭飞行模式或使用无线局域网来访问数据" message:nil doneTitle:@"设置" sureBlock:^{
+/// 开启网络状况监听
+- (void)addReachability{
+    Reachability *reach = [Reachability reachabilityForInternetConnection];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(netStatusChange:) name:kReachabilityChangedNotification object:nil];
+    //开启监听，会启动一个run loop
+    [reach startNotifier];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self handleNoNetWorkEvent];
+        if (self.networkStatusBlock) {
+            self.networkStatusBlock([UIDevice zh_currentNetworkStatus]);
+        }
+    });
+}
+/// 监听通知回调
+- (void)netStatusChange:(NSNotification *)note{
+    Reachability *hostReach = [note object];
+    NSParameterAssert([hostReach isKindOfClass:[Reachability class]]);
+    //判断网络状态
+    switch (hostReach.currentReachabilityStatus) {
+        case NotReachable:
+            [self handleNoNetWorkEvent];
+            if (self.networkStatusBlock) { self.networkStatusBlock(ZhDeviceNetworkStatusNotReachable);}
+            break;
+        case ReachableViaWWAN:
+            if (self.networkStatusBlock) { self.networkStatusBlock(ZhDeviceNetworkStatusReachableViaWWAN);}
+            break;
+        case ReachableViaWiFi:
+            if (self.networkStatusBlock) { self.networkStatusBlock(ZhDeviceNetworkStatusReachableViaWiFi);}
+            break;
+        default:
+            break;
+    }
+}
+/// 自动处理无网络问题
+- (void)handleNoNetWorkEvent{
+    if (![UIDevice zh_isNetwork]) {
+        [self showAlertWithTitle:@"关闭飞行模式或使用无线局域网来访问数据" message:nil doneTitle:@"设置" sureBlock:^{
             [ZhSystemTool openAppPrivacySettings];
         } cancelTitle:@"好" cancelBlock:nil];
-    } else {
-        if (![UIDevice zh_isNetwork]) {
-            [ZhAlertTool showAlertWithTitle:@"关闭飞行模式或使用无线局域网来访问数据" message:nil doneTitle:@"设置" sureBlock:^{
+    }else{
+        if ([UIDevice zh_isAirPlane]) {
+            [self showAlertWithTitle:@"关闭飞行模式或使用无线局域网来访问数据" message:nil doneTitle:@"设置" sureBlock:^{
                 [ZhSystemTool openAppPrivacySettings];
             } cancelTitle:@"好" cancelBlock:nil];
-        }else{
+        } else {
 //            NSLog(@"正常有网");
         }
     }

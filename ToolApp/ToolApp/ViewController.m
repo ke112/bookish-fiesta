@@ -98,6 +98,64 @@
 //    }];
     
 //    [[ZHVersionManager versionDetection] requestVersionUpdateQueryWithAppleId:@"1225446103" promptType:WYVersionPromptIgnore cycle:7 isShowUpdateContent:NO];
+    
+//    NSMutableArray *strArr = [NSMutableArray array];
+//    [strArr addObject:[UIDevice zh_deviceModel]];
+//    [strArr addObject:[UIDevice zh_isWifiEnable] ? @"1" : @"0"];
+//    [strArr addObject:[UIDevice zh_wifiInfo]];
+//    [strArr addObject:[UIDevice zh_wifiName]];
+//    [strArr addObject:[UIDevice zh_MacAddress]];
+//    [strArr addObject:[UIDevice zh_isWifiEnable] ? @"1" : @"0"]; //不好使
+    
+//    [strArr addObject:[UIDevice zh_currentShowVc]];
+//    [strArr addObject:[UIDevice zh_currentkeyWindow]];
+//    [strArr addObject:[UIDevice zh_currentRootVc]];
+//
+//    [strArr addObject:[UIDevice zh_appVersion]];
+//    [strArr addObject:[UIDevice zh_deviceName]];
+//    [strArr addObject:[UIDevice zh_deviceUUID]];
+//    [strArr addObject:[UIDevice zh_isAirPlane] ? @"1" : @"0"];
+    
+//    NSLog(@"strArr: %@",strArr);
+    
+//    self.networkStatusBlock = ^(ZhDeviceNetworkStatus status) {
+//        switch (status) {
+//            case 0:
+//                NSLog(@"网络不通");
+//                break;
+//            case 1:
+//                NSLog(@"手机上网");
+//                break;
+//            case 2:
+//                NSLog(@"wifi上网");
+//                break;
+//            default:
+//                break;
+//        }
+//    };
+}
+
+
+/// 打印网络信息
+- (void)showNetWorkLog{
+    NSLog(@"%@",[UIDevice zh_isNetwork]? @"有网" : @"没有网");
+    NSLog(@"%@",[UIDevice zh_isWWANNetwork]? @"是sim卡" : @"不是sim卡");
+    NSLog(@"%@",[UIDevice zh_isWiFiNetwork]? @"是wifi" : @"不是wifi");
+    NSLog(@"%@",[UIDevice zh_isAirPlane]? @"是飞行模式" : @"不是飞行模式");
+    NSLog(@"%@",[UIDevice zh_isSIMInstalled]? @"有sim卡" : @"没有sim卡");
+    NSLog(@"[UIDevice zh_operatorType] %@",[UIDevice zh_operatorType] == ZhOperatorTypeUnKnown ? @"未插卡":@"网络");
+    NSLog(@"设备型号:%@",[UIDevice zh_deviceModel]);
+    NSLog(@"[UIDevice zh_currentNetworkStatus]: %d",[UIDevice zh_currentNetworkStatus]);
+    
+}
+/// 打印wifi信息
+- (void)showWifiLog{
+    NSLog(@"%@",[UIDevice zh_wifiInfo]);
+}
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [super touchesBegan:touches withEvent:event];
+//    [self showNetWorkLog];
+    [self showWifiLog];
 }
 
 - (void)testClick{

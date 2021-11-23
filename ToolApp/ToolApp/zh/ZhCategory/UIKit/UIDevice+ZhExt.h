@@ -11,21 +11,19 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, ZhOperatorType) {
-    ZhOperatorTypeUnKnown, /// 未知运营商
-    ZhOperatorTypeChinaMobile,/// 移动运营商
-    ZhOperatorTypeChinaUnicom,/// 联通运营商
-    ZhOperatorTypeChinaTelecom,///  电信运营商
-    ZhOperatorTypeChinaTietong,/// 铁通运营商
+    ZhOperatorTypeUnKnown = 0, /// 未知运营商
+    ZhOperatorTypeChinaMobile = 1,/// 移动运营商
+    ZhOperatorTypeChinaUnicom = 2,/// 联通运营商
+    ZhOperatorTypeChinaTelecom = 3,///  电信运营商
+    ZhOperatorTypeChinaTietong = 4,/// 铁通运营商
 };
 
 typedef NS_ENUM(NSInteger, ZhDeviceNetworkStatus) {
     ZhDeviceNetworkStatusNotReachable = 0, /// 无网络
     ZhDeviceNetworkStatusReachableViaWWAN = 1, /// 手机网络
     ZhDeviceNetworkStatusReachableViaWiFi = 2, /// WIFI网络
-    ZhDeviceNetworkStatusUnknown = 3  /// 未知网络
 };
-/// 网络状态的Block
-typedef void(^ZhDeviceNetworkStatusBlock)(ZhDeviceNetworkStatus status);
+
 
 @interface UIDevice (ZhExt)
 
@@ -89,9 +87,6 @@ typedef void(^ZhDeviceNetworkStatusBlock)(ZhDeviceNetworkStatus status);
 /// 获取当前网络类型
 + (ZhDeviceNetworkStatus)zh_currentNetworkStatus;
 
-///  开始监听网络
-+ (void)zh_networkStatusWithBlock:(ZhDeviceNetworkStatusBlock)newStatus;
-
 /// 有网YES, 无网:NO
 + (BOOL)zh_isNetwork;
 
@@ -106,6 +101,9 @@ typedef void(^ZhDeviceNetworkStatusBlock)(ZhDeviceNetworkStatus status);
 
 /// 是否安装了SIM卡
 + (BOOL)zh_isSIMInstalled;
+
+///手机运营商
++ (ZhOperatorType)zh_operatorType;
 
 #pragma mark ====== Wifi ======
 
@@ -127,15 +125,12 @@ typedef void(^ZhDeviceNetworkStatusBlock)(ZhDeviceNetworkStatus status);
 /// macAddress
 + (NSString *)zh_MacAddress;
 
-///手机运营商
-+ (ZhOperatorType)zh_operatorType;
-
 #pragma mark ====== 当前显示的视图控制器 ======
 
-/// 获取设备当前vc
-+ (UIViewController *)zh_currentVc;
+/// 获取当前显示的vc
++ (UIViewController *)zh_currentShowVc;
 
-/// 获取设备当前根视图控制器
+/// 获取当前根视图控制器vc
 + (UIViewController *)zh_currentRootVc;
 
 /// 获取当前keyWindow

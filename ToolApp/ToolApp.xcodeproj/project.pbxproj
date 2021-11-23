@@ -14,6 +14,8 @@
 		295A6D352728032000A943FC /* TwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 295A6D342728032000A943FC /* TwoViewController.m */; };
 		295A6D382728032B00A943FC /* ThreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 295A6D372728032B00A943FC /* ThreeViewController.m */; };
 		295A6D3B2728033700A943FC /* FourViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 295A6D3A2728033700A943FC /* FourViewController.m */; };
+		2963C1E7274CDDF30063D9D6 /* ZhAppTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 2963C1E6274CDDF30063D9D6 /* ZhAppTool.m */; };
+		2963C1EA274CEBC90063D9D6 /* UIViewController+ZhAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 2963C1E9274CEBC90063D9D6 /* UIViewController+ZhAlert.m */; };
 		296E7EBE26A6B6D3008ACAE7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 296E7EBD26A6B6D3008ACAE7 /* AppDelegate.m */; };
 		296E7EC426A6B6D3008ACAE7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 296E7EC326A6B6D3008ACAE7 /* ViewController.m */; };
 		296E7EC926A6B6D6008ACAE7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 296E7EC826A6B6D6008ACAE7 /* Assets.xcassets */; };
@@ -94,6 +96,10 @@
 		295A6D372728032B00A943FC /* ThreeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThreeViewController.m; sourceTree = "<group>"; };
 		295A6D392728033700A943FC /* FourViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FourViewController.h; sourceTree = "<group>"; };
 		295A6D3A2728033700A943FC /* FourViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FourViewController.m; sourceTree = "<group>"; };
+		2963C1E5274CDDF30063D9D6 /* ZhAppTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZhAppTool.h; sourceTree = "<group>"; };
+		2963C1E6274CDDF30063D9D6 /* ZhAppTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZhAppTool.m; sourceTree = "<group>"; };
+		2963C1E8274CEBC90063D9D6 /* UIViewController+ZhAlert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ZhAlert.h"; sourceTree = "<group>"; };
+		2963C1E9274CEBC90063D9D6 /* UIViewController+ZhAlert.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ZhAlert.m"; sourceTree = "<group>"; };
 		296E7EB926A6B6D3008ACAE7 /* ToolApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToolApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		296E7EBC26A6B6D3008ACAE7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		296E7EBD26A6B6D3008ACAE7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -119,6 +125,7 @@
 		29ABC68727338EEC00C22B08 /* JSPatchPlatform.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JSPatchPlatform.framework; sourceTree = "<group>"; };
 		29ABC68927338F1D00C22B08 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		29ABC68B27338F2B00C22B08 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		29B3ED4A27450D5600EDAE60 /* ToolApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ToolApp.entitlements; sourceTree = "<group>"; };
 		29C843C226A908B000912E87 /* NSString+ZhExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ZhExt.h"; sourceTree = "<group>"; };
 		29C843C326A908B000912E87 /* UIImage+ZhExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ZhExt.h"; sourceTree = "<group>"; };
 		29C843C526A908B000912E87 /* UIImageView+ZhExt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ZhExt.m"; sourceTree = "<group>"; };
@@ -272,6 +279,7 @@
 		296E7EBB26A6B6D3008ACAE7 /* ToolApp */ = {
 			isa = PBXGroup;
 			children = (
+				29B3ED4A27450D5600EDAE60 /* ToolApp.entitlements */,
 				29D1823F26A828C80041724D /* 模拟点.gpx */,
 				29ABC68727338EEC00C22B08 /* JSPatchPlatform.framework */,
 				2986932027313DD7001BBDF9 /* 1102.js */,
@@ -355,6 +363,8 @@
 				29E8D67626A9700A00F2EEA2 /* ZhScreenRotation.m */,
 				29C843E526A908B000912E87 /* ZhSystemTool.h */,
 				29C843EB26A908B000912E87 /* ZhSystemTool.m */,
+				2963C1E5274CDDF30063D9D6 /* ZhAppTool.h */,
+				2963C1E6274CDDF30063D9D6 /* ZhAppTool.m */,
 				29C8442326A908F100912E87 /* ZhTimerManage.h */,
 				29C8442226A908F100912E87 /* ZhTimerManage.m */,
 				296E7EDC26A6E155008ACAE7 /* ZHVersionManager.h */,
@@ -439,6 +449,8 @@
 			children = (
 				29C843E126A908B000912E87 /* UIViewController+ZhNavigation.h */,
 				29C843D226A908B000912E87 /* UIViewController+ZhNavigation.m */,
+				2963C1E8274CEBC90063D9D6 /* UIViewController+ZhAlert.h */,
+				2963C1E9274CEBC90063D9D6 /* UIViewController+ZhAlert.m */,
 				29E8D65926A959A200F2EEA2 /* UIBarButtonItem+ZhNavigationBar.h */,
 				29E8D65A26A959A200F2EEA2 /* UIBarButtonItem+ZhNavigationBar.m */,
 				29C843C826A908B000912E87 /* UIButton+ZhEdge.h */,
@@ -664,6 +676,7 @@
 				29E8D67D26A9700A00F2EEA2 /* ZhLoadingHud.m in Sources */,
 				296E7EC426A6B6D3008ACAE7 /* ViewController.m in Sources */,
 				29E8D66026A96ED400F2EEA2 /* UIScrollView+BaseRefresh.m in Sources */,
+				2963C1E7274CDDF30063D9D6 /* ZhAppTool.m in Sources */,
 				29C8442026A908B000912E87 /* ZhTableView.m in Sources */,
 				292F3C9F27294DF000F189FC /* UINavigationSXFixSpace.m in Sources */,
 				29C8442726A9095300912E87 /* UIScrollView+ZhTabExtension.m in Sources */,
@@ -696,6 +709,7 @@
 				29C8441126A908B000912E87 /* UITextView+ZhInputLimit.m in Sources */,
 				29C8443026A909A300912E87 /* UICollectionView+DynamicCacheHeightLayoutCell.m in Sources */,
 				29C8441726A908B000912E87 /* ZhSystemTool.m in Sources */,
+				2963C1EA274CEBC90063D9D6 /* UIViewController+ZhAlert.m in Sources */,
 				295A6D322728031400A943FC /* OneViewController.m in Sources */,
 				29C8441C26A908B000912E87 /* ZhCollectionViewCell.m in Sources */,
 				295A6D3B2728033700A943FC /* FourViewController.m in Sources */,
@@ -842,6 +856,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ToolApp/ToolApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 47UJ7TQKNK;
@@ -875,6 +890,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ToolApp/ToolApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 47UJ7TQKNK;

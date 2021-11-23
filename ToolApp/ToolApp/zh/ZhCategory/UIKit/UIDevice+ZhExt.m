@@ -16,9 +16,12 @@
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import <ifaddrs.h>
 #import <arpa/inet.h>
-#import <AFNetworking/AFNetworking.h>
+#import <Reachability/Reachability.h>
+
+static const NSString *simulatorIndentify = @"Simulator";
 
 @implementation UIDevice (ZhExt)
+
 
 #pragma mark ====== phone的数据 ======
 
@@ -54,10 +57,10 @@
     if ([deviceModel isEqualToString:@"iPhone9,2"])    return @"iPhone 7 Plus";
     if ([deviceModel isEqualToString:@"iPhone9,3"])    return @"iPhone 7";
     if ([deviceModel isEqualToString:@"iPhone9,4"])    return @"iPhone 7 Plus";
-    if ([deviceModel isEqualToString:@"iPhone10,1"])   return @"iPhone_8";
-    if ([deviceModel isEqualToString:@"iPhone10,4"])   return @"iPhone_8";
-    if ([deviceModel isEqualToString:@"iPhone10,2"])   return @"iPhone_8_Plus";
-    if ([deviceModel isEqualToString:@"iPhone10,5"])   return @"iPhone_8_Plus";
+    if ([deviceModel isEqualToString:@"iPhone10,1"])   return @"iPhone 8";
+    if ([deviceModel isEqualToString:@"iPhone10,4"])   return @"iPhone 8";
+    if ([deviceModel isEqualToString:@"iPhone10,2"])   return @"iPhone 8_Plus";
+    if ([deviceModel isEqualToString:@"iPhone10,5"])   return @"iPhone 8_Plus";
     if ([deviceModel isEqualToString:@"iPhone10,3"])   return @"iPhone X";
     if ([deviceModel isEqualToString:@"iPhone10,6"])   return @"iPhone X";
     if ([deviceModel isEqualToString:@"iPhone11,8"])   return @"iPhone XR";
@@ -158,8 +161,8 @@
     if ([deviceModel isEqualToString:@"AppleTV6,2"])      return @"Apple TV 4K";
     if ([deviceModel isEqualToString:@"AppleTV11,1"])      return @"Apple TV 4K (2st generation)";
 
-    if ([deviceModel isEqualToString:@"i386"])         return @"Simulator";
-    if ([deviceModel isEqualToString:@"x86_64"])       return @"Simulator";
+    if ([deviceModel isEqualToString:@"i386"])         return simulatorIndentify;
+    if ([deviceModel isEqualToString:@"x86_64"])       return simulatorIndentify;
     return deviceModel;
 }
 + (NSString *)zh_deviceLocalizedModel {
@@ -240,77 +243,52 @@
 }
 
 #pragma mark ====== 网络 ======
+
 /// 获取当前网络类型(通过Reachability)
 + (ZhDeviceNetworkStatus)zh_currentNetworkStatus{
-    ZhDeviceNetworkStatus network = ZhDeviceNetworkStatusUnknown;
-    switch ([[AFNetworkReachabilityManager sharedManager] networkReachabilityStatus]) {
-        case AFNetworkReachabilityStatusUnknown:
-            network = ZhDeviceNetworkStatusUnknown;
-            break;
-        case AFNetworkReachabilityStatusNotReachable:
+    ZhDeviceNetworkStatus network = ZhDeviceNetworkStatusNotReachable;
+    NetworkStatus status = [[Reachability reachabilityForInternetConnection] currentReachabilityStatus];
+    switch (status) {
+        case NotReachable:
             network = ZhDeviceNetworkStatusNotReachable;
             break;
-        case AFNetworkReachabilityStatusReachableViaWWAN:
+        case ReachableViaWWAN:
             network = ZhDeviceNetworkStatusReachableViaWWAN;
             break;
-        case AFNetworkReachabilityStatusReachableViaWiFi:
+        case ReachableViaWiFi:
             network = ZhDeviceNetworkStatusReachableViaWiFi;
             break;
         default:
             break;
     }
     return network;
-    
-}
-
-///  开始监听网络
-+ (void)zh_networkStatusWithBlock:(ZhDeviceNetworkStatusBlock)newStatus {
-    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        switch (status) {
-            case AFNetworkReachabilityStatusUnknown:
-                newStatus ? newStatus(ZhDeviceNetworkStatusUnknown) : nil;
-                break;
-            case AFNetworkReachabilityStatusNotReachable:
-                newStatus ? newStatus(ZhDeviceNetworkStatusNotReachable) : nil;
-                break;
-            case AFNetworkReachabilityStatusReachableViaWWAN:
-                newStatus ? newStatus(ZhDeviceNetworkStatusReachableViaWWAN) : nil;
-                break;
-            case AFNetworkReachabilityStatusReachableViaWiFi:
-                newStatus ? newStatus(ZhDeviceNetworkStatusReachableViaWiFi) : nil;
-                break;
-            default:
-                break;
-        }
-    }];
-
 }
 
 /// 有网YES, 无网:NO
 + (BOOL)zh_isNetwork{
-    return [AFNetworkReachabilityManager sharedManager].isReachable;
+    return [Reachability reachabilityForInternetConnection].isReachable;
 }
 
 /// 手机网络:YES, 反之:NO
 + (BOOL)zh_isWWANNetwork{
-    return [AFNetworkReachabilityManager sharedManager].isReachableViaWWAN;
+    return [Reachability reachabilityForInternetConnection].isReachableViaWWAN;
 }
 
 /// WiFi网络:YES, 反之:NO
 + (BOOL)zh_isWiFiNetwork{
-    return [AFNetworkReachabilityManager sharedManager].isReachableViaWiFi;
+    return [Reachability reachabilityForInternetConnection].isReachableViaWiFi;
 }
 
-/// 是否开启飞行模式
+/// 是否开启飞行模式(判断的方法不准)
 + (BOOL)zh_isAirPlane{
-    if ([self zh_isSIMInstalled]) {
+//    if ([self zh_isSIMInstalled]) {
         CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc]init];
         if (@available(iOS 12.0, *)) {
-            if (!networkInfo.serviceCurrentRadioAccessTechnology) {
+            if (networkInfo.serviceCurrentRadioAccessTechnology != nil) {
+                return NO;
+            } else {
                 //飞行模式
                 return YES;
-            } else {
-                return NO;
             }
         }else{
             if(!networkInfo.currentRadioAccessTechnology){
@@ -320,26 +298,50 @@
                 return NO;
             }
         }
-    } else {
-        //没有插卡,就去判断有没有网络
-        return ![self zh_isNetwork];
-    }
+//    } else {
+//        //没有插卡,就去判断有没有网络
+//        return ![self zh_isNetwork];
+//    }
 }
 
 /// 是否安装了SIM卡
 + (BOOL)zh_isSIMInstalled{
     //先排除模拟器
-    if ([[UIDevice zh_deviceModel] isEqualToString:@"Simulator"]) {
+    if ([[self zh_deviceModel] isEqualToString:simulatorIndentify]) {
         return NO;
     }
     CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
     CTCarrier *carrier = [networkInfo subscriberCellularProvider];
-
     if (!carrier.isoCountryCode) {
-        NSLog(@"No sim present Or No cellular coverage or phone is on airplane mode.");
         return NO;
     }
     return YES;
+}
+
+///手机运营商
++ (ZhOperatorType)zh_operatorType{
+    ZhOperatorType operatorType;
+    CTTelephonyNetworkInfo *info = [[CTTelephonyNetworkInfo alloc] init];
+    CTCarrier *carrier = info.subscriberCellularProvider;
+    if (carrier) {
+        NSString *code = carrier.mobileNetworkCode;
+//        NSString *name = carrier.carrierName; //中国移动 中国联通 中国电信
+//        NSString *countryCode = carrier.mobileCountryCode; //都是460
+        if ([code isEqualToString:@"00"] || [code isEqualToString:@"02"] || [code isEqualToString:@"07"]) {
+            operatorType = ZhOperatorTypeChinaMobile;
+        } else if ([code isEqualToString:@"01"] || [code isEqualToString:@"06"]) {
+            operatorType = ZhOperatorTypeChinaUnicom;
+        } else if ([code isEqualToString:@"03"] || [code isEqualToString:@"05"] || [code isEqualToString:@"11"]) {
+            operatorType = ZhOperatorTypeChinaTelecom;
+        } else if ([code isEqualToString:@"20"]) {
+            operatorType = ZhOperatorTypeChinaTietong;
+        } else {
+            operatorType = ZhOperatorTypeUnKnown;
+        }
+    } else {
+        operatorType = ZhOperatorTypeUnKnown;
+    }
+    return operatorType;
 }
 
 #pragma mark ====== Wifi ======
@@ -370,15 +372,17 @@
             break;
         }
     }
-    return info;
+    return info ? : @{};
 }
 /// 获取WIFI名字
 + (NSString *)zh_wifiName{
-    return (NSString *)[self zh_wifiInfo][@"SSID"];
+    NSString *wifiName = (NSString *)[self zh_wifiInfo][@"SSID"];
+    return wifiName ? : @"";
 }
 /// 获取WIFi的Mac地址
 + (NSString *)zh_wifiMacAddress{
-    return (NSString *)[self zh_wifiInfo][@"BSSID"];
+    NSString *wifiMacAddress = (NSString *)[self zh_wifiInfo][@"BSSID"];
+    return wifiMacAddress ? : @"";
 }
 /// 获取Wifi信号强度
 + (int)zh_wifiSignalStrength{
@@ -487,34 +491,11 @@
     return outstring;
 }
 
-///手机运营商
-+ (ZhOperatorType)zh_operatorType{
-    ZhOperatorType operatorType;
-    CTTelephonyNetworkInfo *info = [[CTTelephonyNetworkInfo alloc] init];
-    CTCarrier *carrier = info.subscriberCellularProvider;
-    if (carrier) {
-        NSString *code = carrier.mobileCountryCode;
-        if ([code isEqualToString:@"00"] || [code isEqualToString:@"02"] || [code isEqualToString:@"07"]) {
-            operatorType = ZhOperatorTypeChinaMobile;
-        } else if ([code isEqualToString:@"01"] || [code isEqualToString:@"06"]) {
-            operatorType = ZhOperatorTypeChinaUnicom;
-        } else if ([code isEqualToString:@"03"] || [code isEqualToString:@"05"]) {
-            operatorType = ZhOperatorTypeChinaTelecom;
-        } else if ([code isEqualToString:@"20"]) {
-            operatorType = ZhOperatorTypeChinaTietong;
-        } else {
-            operatorType = ZhOperatorTypeUnKnown;
-        }
-    } else {
-        operatorType = ZhOperatorTypeUnKnown;
-    }
-    return operatorType;
-}
 
 #pragma mark ====== 当前显示的视图控制器 ======
 
-/// 获取设备当前vc
-+(UIViewController *)zh_currentVc{
+/// 获取当前显示的vc
++(UIViewController *)zh_currentShowVc{
     UIViewController  *superVC = [[self class] zh_currentRootVc];
     if ([superVC isKindOfClass:[UITabBarController class]]) {
         UIViewController  *tabSelectVC = ((UITabBarController*)superVC).selectedViewController;
@@ -528,7 +509,7 @@
         }
     return superVC;
 }
-/// 获取设备当前window vc
+/// 获取当前根视图控制器vc
 + (UIViewController *)zh_currentRootVc{
     UIViewController *result = nil;
     UIWindow *window = [self zh_currentkeyWindow];

@@ -29,6 +29,7 @@
 #import "ZhDownloadManager.h"
 #import "ZhImageTool.h"
 #import "ZhScreenRotation.h"
+#import "ZhAppTool.h"
 #import "ZhSystemTool.h"
 #import "ZhTimerManage.h"
 #import "ZHVersionManager.h"

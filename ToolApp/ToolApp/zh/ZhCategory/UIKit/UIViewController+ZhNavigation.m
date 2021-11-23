@@ -9,12 +9,9 @@
 #import "UIViewController+ZhNavigation.h"
 #import <objc/runtime.h>
 
-static char *naviAlphaKey = @"naviAlphaKey";
-
 @implementation UIViewController (ZhNavigation)
 
 + (void)load {
-
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         Class class = [self class];

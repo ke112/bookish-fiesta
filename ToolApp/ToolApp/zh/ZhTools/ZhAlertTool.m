@@ -43,40 +43,6 @@
     [[UIDevice zh_currentRootVc] presentViewController:alertController animated:YES completion:nil];
 }
 
-/// 获取设备当前window vc
-+ (UIViewController *)zh_currentRootVc{
-    UIViewController *result = nil;
-    UIWindow * window = [self zh_currentkeyWindow];
-    if ([window subviews].count > 0) {
-        UIView *frontView = [[window subviews] objectAtIndex:0];
-        id nextResponder = [frontView nextResponder];
-        if ([nextResponder isKindOfClass:[UIViewController class]]){
-            result = nextResponder;
-        }else{
-            result = window.rootViewController;
-        }
-    }
-    return result;
-}
-/// 获取当前keyWindow
-+ (UIWindow *)zh_currentkeyWindow{
-    if (@available(iOS 13.0, *)){
-        for (UIWindowScene* windowScene in [UIApplication sharedApplication].connectedScenes) {
-            if (windowScene.activationState == UISceneActivationStateForegroundActive){
-                for (UIWindow *window in windowScene.windows){
-                    if (window.isKeyWindow){
-                        return window;
-                        break;
-                    }
-                }
-            }
-        }
-    }else{
-        return [UIApplication sharedApplication].keyWindow;
-    }
-    return nil;
-}
-
 #pragma mark ====== PickerView ======
 
 /// 弹出pickerView选择器

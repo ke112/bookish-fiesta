@@ -37,6 +37,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// 跳转vc的传参
 @property (nonatomic, strong) NSMutableDictionary *vcParam;
 
+#pragma mark ====== 处理网络相关问题 ======
+/// 是否有网络
+@property (assign, nonatomic) BOOL connectEnable;
+/// 网络状态的Block
+@property (nonatomic, copy) void (^networkStatusBlock)(ZhDeviceNetworkStatus status);
+
+
 #pragma mark ====== LYEmptyView管理EmptyView ======
 /// 网络加载无数据/失败
 @property (nonatomic, assign) ZhEmptyLoadState zh_emptyLoadState;
